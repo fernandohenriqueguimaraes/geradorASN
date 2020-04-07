@@ -1,4 +1,4 @@
-package br.com.geradorASN.service.impl;
+package br.com.geradorASN.service;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -20,7 +20,6 @@ import br.com.geradorASN.dao.ProdutoDao;
 import br.com.geradorASN.entity.Empresa;
 import br.com.geradorASN.entity.Produto;
 import br.com.geradorASN.entity.Enum.TipoProdutoEnum;
-import br.com.geradorASN.service.geradorASNService;
 
 @Transactional
 @Service("produtoService")

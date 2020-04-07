@@ -1,4 +1,4 @@
-package br.com.geradorASN.service.impl;
+package br.com.geradorASN.service;
 
 import java.io.FileReader;
 import java.io.IOException;
