@@ -27,6 +27,8 @@ public class ProdutoService implements geradorASNService<Produto> {
 	
 	private static final Logger log = LoggerFactory.getLogger(ProdutoService.class);
 	
+	private static String PRODUTO_SOURCE_PATH = "src/main/resources/produtos.csv";
+	
 	@Autowired
 	private ProdutoDao produtoRepository;
 	
@@ -35,7 +37,7 @@ public class ProdutoService implements geradorASNService<Produto> {
 		List<Produto> produtos = new ArrayList<Produto>();
 
 		@SuppressWarnings("deprecation")
-		CSVReader reader = new CSVReader(new FileReader("src/main/resources/produtos.csv"), ';' , '"' , 1);
+		CSVReader reader = new CSVReader(new FileReader(PRODUTO_SOURCE_PATH), ';' , '"' , 1);
 		List<String[]> produtoStringList = reader.readAll();
 		
 		for (String[] produto : produtoStringList) {

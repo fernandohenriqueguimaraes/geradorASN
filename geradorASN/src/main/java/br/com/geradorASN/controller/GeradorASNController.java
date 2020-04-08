@@ -86,7 +86,7 @@ public class GeradorASNController {
 	
 	@RequestMapping(value="/gerarASN", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody  
-	public String consultarNimbi() {
+	public void consultarNimbi() {
 		
 		String response = StringUtils.EMPTY;
 		
@@ -95,7 +95,6 @@ public class GeradorASNController {
 		} catch (RestErrorException | ParseException e) {
 			e.printStackTrace();
 		}
-		return response;
 		
 	}
 }

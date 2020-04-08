@@ -15,3 +15,6 @@ geradorASN/mvnw
 *.jar
 *.properties
 geradorASN/.mvn/
+*.gz
+geradorASN/src/main/resources/xmlNimbi/
+*.xml

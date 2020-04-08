@@ -23,6 +23,8 @@ public class EmpresaService {
 	
 	private static final Logger log = LoggerFactory.getLogger(EmpresaService.class);
 	
+	private static String EMPRESA_SOURCE_PATH = "src/main/resources/empresas.csv";
+	
 	@Autowired
 	private EmpresaDao empresaRepository;
 
@@ -30,7 +32,7 @@ public class EmpresaService {
 		
 		List<Empresa> empresas = new ArrayList<Empresa>();
 
-		CSVReader reader = new CSVReader(new FileReader("src/main/resources/empresas.csv"), ';' , '"' , 1);
+		CSVReader reader = new CSVReader(new FileReader(EMPRESA_SOURCE_PATH), ';' , '"' , 1);
 		List<String[]> empresaStringList = reader.readAll();
 		
 		for (String[] empresa : empresaStringList) {
