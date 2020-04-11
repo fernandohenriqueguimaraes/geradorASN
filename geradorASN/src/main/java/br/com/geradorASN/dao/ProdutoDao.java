@@ -10,8 +10,8 @@ import br.com.geradorASN.entity.Produto;
 
 @Repository("produtoRepository")
 public interface ProdutoDao extends CrudRepository<Produto, Integer> {
-	
+
 	@Query("SELECT p FROM Produto p WHERE p.partNumber = ?1")
 	List<Produto> getProdutoByPartNumber(String partNumber);
-	
+
 }

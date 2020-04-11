@@ -3,15 +3,15 @@ package br.com.geradorASN.entity.rest.v1.get.response;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ItemsResponse {
-	
-    @JsonProperty("OCNumber")
-    private String ocNumber;
-    
-    @JsonProperty("OCLineNumber")
-    private String ocLineNumber;
-    
-    @JsonProperty("ItemDescription")
-    private String itemDescription;
+
+	@JsonProperty("OCNumber")
+	private String ocNumber;
+
+	@JsonProperty("OCLineNumber")
+	private String ocLineNumber;
+
+	@JsonProperty("ItemDescription")
+	private String itemDescription;
 
 	public String getOcNumber() {
 		return ocNumber;

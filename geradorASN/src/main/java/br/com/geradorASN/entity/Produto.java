@@ -22,38 +22,38 @@ public class Produto implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="id")
+	@Column(name = "id")
 	private long id;
-	
+
 	@Column(name = "partNumber", unique = true, length = 10)
 	private String partNumber;
-	
+
 	@Column(name = "cai", length = 10)
 	private String cai;
-	
+
 	@Column(name = "cad", length = 15)
 	private String cad;
-	
+
 	@Column(name = "modelo", length = 50)
 	private String modelo;
-	
+
 	@Column(name = "tipoProduto", length = 20)
 	@Enumerated(EnumType.STRING)
 	private TipoProdutoEnum tipoProduto;
-	
+
 	@Column(name = "unidadeMedida", length = 10)
 	private String unidadeMedida;
-	
-	@Column(name = "volume", precision=16, scale=2)
+
+	@Column(name = "volume", precision = 16, scale = 2)
 	private BigDecimal volume;
-	
-	@Column(name = "altura", precision=16, scale=2)
+
+	@Column(name = "altura", precision = 16, scale = 2)
 	private BigDecimal altura;
-	
-	@Column(name = "largura", precision=16, scale=2)
+
+	@Column(name = "largura", precision = 16, scale = 2)
 	private BigDecimal largura;
-	
-	@Column(name = "comprimento", precision=16, scale=2)
+
+	@Column(name = "comprimento", precision = 16, scale = 2)
 	private BigDecimal comprimento;
 
 	public String getPartNumber() {
@@ -145,7 +145,7 @@ public class Produto implements Serializable {
 		this.cad = cad;
 		return this;
 	}
-	
+
 	public long getId() {
 		return id;
 	}

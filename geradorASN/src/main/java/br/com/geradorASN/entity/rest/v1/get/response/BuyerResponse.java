@@ -3,12 +3,12 @@ package br.com.geradorASN.entity.rest.v1.get.response;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class BuyerResponse {
-	
+
 	@JsonProperty("BuyerCNPJ")
-    private String buyerCNPJ;
-	
+	private String buyerCNPJ;
+
 	@JsonProperty("BuyerName")
-    private String buyerName;
+	private String buyerName;
 
 	public String getBuyerCNPJ() {
 		return buyerCNPJ;

@@ -23,7 +23,7 @@ import br.com.geradorASN.entity.Enum.TipoProdutoEnum;
 
 @Transactional
 @Service("produtoService")
-public class ProdutoService implements geradorASNService<Produto> {
+public class ProdutoService implements GeradorTabelasService<Produto> {
 	
 	private static final Logger log = LoggerFactory.getLogger(ProdutoService.class);
 	

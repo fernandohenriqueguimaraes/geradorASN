@@ -18,6 +18,7 @@ import br.com.geradorASN.entity.Produto;
 import br.com.geradorASN.entity.xml.Gerado;
 import br.com.geradorASN.exception.RestErrorException;
 import br.com.geradorASN.service.EmpresaService;
+import br.com.geradorASN.service.GeradorASNService;
 import br.com.geradorASN.service.NimbiService;
 import br.com.geradorASN.service.ProdutoService;
 
@@ -29,59 +30,59 @@ import br.com.geradorASN.service.ProdutoService;
  */
 @RestController
 public class GeradorASNController {
-	
+
 	private static final Logger log = LoggerFactory.getLogger(GeradorASNController.class);
 
 	@Autowired
 	private ProdutoService produtoService;
-	
+
 	@Autowired
 	private EmpresaService empresaService;
-	
-	@Autowired 
-	private NimbiService nimbiService;
-	
-	@RequestMapping(value="/produtos", method=RequestMethod.GET)
-    @ResponseBody  
+
+	@Autowired
+	private GeradorASNService geradorASNService;
+
+	@RequestMapping(value = "/produtos", method = RequestMethod.GET)
+	@ResponseBody
 	public List<Produto> carregarProdutos() {
-		
+
 		List<Produto> produtos = new ArrayList<Produto>();
-		
+
 		try {
 			produtos = produtoService.carregarDados();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		return produtos;
-		
+
 	}
-	
-	@RequestMapping(value="/empresas", method=RequestMethod.GET)
-    @ResponseBody  
+
+	@RequestMapping(value = "/empresas", method = RequestMethod.GET)
+	@ResponseBody
 	public List<Empresa> carregarEmpresas() {
-		
+
 		List<Empresa> empresas = new ArrayList<Empresa>();
-		
+
 		try {
 			empresas = empresaService.carregarDados();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return empresas;
-		
+
 	}
-	
-	@RequestMapping(value="/gerarASN", method=RequestMethod.GET)
-    @ResponseBody  
+
+	@RequestMapping(value = "/gerarASN", method = RequestMethod.GET)
+	@ResponseBody
 	public List<Gerado> gerarASN() {
 		List<Gerado> listaGerado = new ArrayList<Gerado>();
 		try {
-			listaGerado = (List<Gerado>) nimbiService.gerarASN();
+			listaGerado = (List<Gerado>) geradorASNService.consultarArquivosZip();
 		} catch (RestErrorException | ParseException e) {
 			e.printStackTrace();
 		}
 		return listaGerado;
-		
+
 	}
 }

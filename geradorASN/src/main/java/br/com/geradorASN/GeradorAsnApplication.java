@@ -10,14 +10,14 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import br.com.geradorASN.service.config.RestNimbiConfig;
 
-@ComponentScan(basePackages = {"br.com.geradorASN"})
+@ComponentScan(basePackages = { "br.com.geradorASN" })
 @Configuration
 @EnableWebMvc
 @SpringBootApplication
 public class GeradorAsnApplication {
-	
+
 	public static void main(String[] args) {
 		SpringApplication.run(GeradorAsnApplication.class, args);
 	}
-	
+
 }

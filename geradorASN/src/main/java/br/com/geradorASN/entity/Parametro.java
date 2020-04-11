@@ -10,15 +10,15 @@ import javax.persistence.Table;
 @Entity(name = "Parametro")
 @Table(name = "Parametro", schema = "app")
 public class Parametro {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="id")
+	@Column(name = "id")
 	private long id;
-	
+
 	@Column(name = "chave", unique = true, length = 30)
 	private String chave;
-	
+
 	@Column(name = "valor", length = 100)
 	private String valor;
 
@@ -41,5 +41,5 @@ public class Parametro {
 	public void setValor(String valor) {
 		this.valor = valor;
 	}
-	
+
 }

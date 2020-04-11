@@ -14,54 +14,54 @@ import javax.persistence.Table;
 public class Empresa implements Serializable {
 
 	private static final long serialVersionUID = -3956529632368979500L;
-	
+
 	public static final String GERA_ASN_SIM = "Sim";
 	public static final String GERA_ASN_NAO = "Não";
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="id")
+	@Column(name = "id")
 	private long id;
-	
+
 	@Column(name = "cnpj", unique = true, length = 20)
 	private String cnpj;
-	
+
 	@Column(name = "bairro", length = 50)
 	private String bairro;
-	
+
 	@Column(name = "cep", length = 15)
 	private String cep;
-	
+
 	@Column(name = "logradouro", length = 80)
 	private String logradouro;
-	
+
 	@Column(name = "numero", length = 10)
 	private String numero;
-	
+
 	@Column(name = "complemento", length = 50)
 	private String complemento;
-	
+
 	@Column(name = "municipio", length = 30)
 	private String municipio;
-	
+
 	@Column(name = "pais", length = 20)
 	private String pais;
-	
+
 	@Column(name = "codigoPais", length = 4)
 	private String codigoPais;
-	
+
 	@Column(name = "tipo", length = 20)
 	private String tipo;
-	
+
 	@Column(name = "razaoSocial", length = 80)
 	private String razaoSocial;
-	
+
 	@Column(name = "codigoEmpresa", length = 10)
 	private String codigoEmpresa;
-	
+
 	@Column(name = "codigoERP", length = 10)
 	private String codigoERP;
-	
+
 	@Column(name = "geraASN", nullable = false)
 	private boolean geraASN;
 
@@ -185,27 +185,27 @@ public class Empresa implements Serializable {
 	public boolean isGeraASN() {
 		return geraASN;
 	}
-	
+
 	public String geraASNtoString() {
-		
+
 		if (this.geraASN) {
 			return GERA_ASN_SIM;
 		}
-		
+
 		return GERA_ASN_NAO;
-		
+
 	}
-	
+
 	public Empresa geraASNtoBoolean(String geraASN) {
-		
+
 		if (geraASN.equals(geraASN)) {
 			this.setGeraASN(true);
 		} else {
 			this.setGeraASN(false);
 		}
-		
+
 		return this;
-		
+
 	}
 
 	public Empresa setGeraASN(boolean geraASN) {

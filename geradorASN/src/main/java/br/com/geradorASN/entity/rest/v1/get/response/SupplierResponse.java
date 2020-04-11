@@ -3,12 +3,12 @@ package br.com.geradorASN.entity.rest.v1.get.response;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SupplierResponse {
-	
+
 	@JsonProperty("SupplierCNPJ")
-    private String supplierCNPJ;
+	private String supplierCNPJ;
 
 	@JsonProperty("SupplierName")
-    private String supplierName;
+	private String supplierName;
 
 	public String getSupplierCNPJ() {
 		return supplierCNPJ;
@@ -30,5 +30,5 @@ public class SupplierResponse {
 	public String toString() {
 		return "SupplierResponse [supplierCNPJ=" + supplierCNPJ + ", supplierName=" + supplierName + "]";
 	}
-	
+
 }

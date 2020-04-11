@@ -6,12 +6,12 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class NotaFiscalEletronicaNimbiResponse {
-	
+
 	@JsonProperty("TotalRecords")
-    private long totalRecords;
-	
+	private long totalRecords;
+
 	@JsonProperty("NFeResponse")
-    private List<NFeResponse> nfeResponse = new ArrayList<NFeResponse>();
+	private List<NFeResponse> nfeResponse = new ArrayList<NFeResponse>();
 
 	public long getTotalRecords() {
 		return totalRecords;

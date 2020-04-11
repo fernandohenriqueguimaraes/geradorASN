@@ -22,53 +22,46 @@ import com.thoughtworks.xstream.io.xml.XmlFriendlyReplacer;
 import br.com.geradorASN.entity.xml.Gerado;
 import br.com.geradorASN.exception.RestErrorException;
 import br.com.geradorASN.service.config.RestTriangulusProd;
+import br.com.geradorASN.util.XMLUtil;
 
 @Transactional
 @Service("triangulusService")
 public class TriangulusService {
-	
+
 	private static final Logger log = LoggerFactory.getLogger(TriangulusService.class);
-	
-	private static String NOME_ALIAS_XML_SAIDA = "Gerado";
+
+	private static String CLASSE_GERADO = "Gerado";
 
 	@Autowired
 	RestTriangulusProd restTriangulusConfig;
-	
+
 	@Autowired
 	private RestService restService;
-	
-	public Gerado consultarDetalhesNotaFiscalTriangulus(String xml) throws ParseException, RestErrorException {
-		
+
+	public Gerado consultarXMLCaminhoZip(String xml) throws ParseException, RestErrorException, ClassNotFoundException {
+
 		UriComponents uri = restTriangulusConfig.getUriXML(xml);
-		
+
 		log.info("Endpoint de consulta ao Triangulus: {}", uri.toUriString());
-		
+
 		@SuppressWarnings("unchecked")
-		ResponseEntity<String> response = (ResponseEntity<String>) 
-				(restService.request(uri, 
-						restTriangulusConfig.getHeaders(),
-						HttpMethod.GET,
-						"parameters", 
-						String.class));
-		
-		String fixedXml = StringUtils.replaceEach(CharMatcher.breakingWhitespace()
-	            .removeFrom(response.getBody()), new String[]{"&lt;","&quot;","&apos;","&gt;", "<?xmlversion=\"1.0\"encoding=\"utf-8\"?><stringxmlns=\"http://www.triangulus.com.br/\">", "</string>"}, new String[]{"<","\"","'",">", StringUtils.EMPTY, StringUtils.EMPTY});
-		
+		ResponseEntity<String> response = (ResponseEntity<String>) (restService.request(uri,
+				restTriangulusConfig.getHeaders(), HttpMethod.GET, "parameters", String.class));
+
+		String fixedXml = tratamentoStringTriangulus(response.getBody());
 		log.debug("Status Code: {}, Response: {}", response.getStatusCode(), fixedXml);
 
-	return (Gerado) createXtream().fromXML(fixedXml);
+		return (Gerado) XMLUtil.createXtream(CLASSE_GERADO).fromXML(fixedXml);
 
 	}
-	
-	private XStream createXtream() {
-		
-		XStream xstream = new XStream(new DomDriver());
-		xstream.alias(NOME_ALIAS_XML_SAIDA, Gerado.class);
-		Class<?>[] classes = new Class[] { Gerado.class };
-		XStream.setupDefaultSecurity(xstream);
-		xstream.allowTypes(classes);
-		
-		return xstream;
+
+	private String tratamentoStringTriangulus(String xml) {
+		return StringUtils.replaceEach(CharMatcher.breakingWhitespace().removeFrom(xml),
+				new String[] { "&lt;", "&quot;", "&apos;", "&gt;",
+						"<?xmlversion=\"1.0\"encoding=\"utf-8\"?><stringxmlns=\"http://www.triangulus.com.br/\">",
+						"</string>" },
+				new String[] { "<", "\"", "'", ">", StringUtils.EMPTY, StringUtils.EMPTY });
+
 	}
-	
+
 }

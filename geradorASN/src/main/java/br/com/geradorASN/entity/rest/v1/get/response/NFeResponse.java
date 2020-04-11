@@ -7,43 +7,43 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class NFeResponse {
 
 	@JsonProperty("Reference")
-    private String reference;
-	
-	@JsonProperty("AccessKey")
-    private String accessKey;
-	
-	@JsonProperty("DocumentDate")
-    private String documentDate;
-	
-	@JsonProperty("RefusalDate")
-    private String refusalDate;
-	
-	@JsonProperty("InvoiceResponse")
-    private String invoiceResponse;
-	
-	@JsonProperty("Supplier")
-    private SupplierResponse supplier;
-	
-	@JsonProperty("Buyer")
-    private BuyerResponse buyer;
-    
-    @JsonProperty("TransporterCNPJ")
-    private String transporterCNPJ;
-	
-	@JsonProperty("Status")
-    private String status;
-	
-	@JsonProperty("HeaderNote")
-    private String headerNote;
-	
-	@JsonProperty("Language")
-    private String language;
-	
-	@JsonProperty("Items")
-    private List<ItemsResponse> items;
+	private String reference;
 
-    @JsonProperty("Total")
-    private Double total;
+	@JsonProperty("AccessKey")
+	private String accessKey;
+
+	@JsonProperty("DocumentDate")
+	private String documentDate;
+
+	@JsonProperty("RefusalDate")
+	private String refusalDate;
+
+	@JsonProperty("InvoiceResponse")
+	private String invoiceResponse;
+
+	@JsonProperty("Supplier")
+	private SupplierResponse supplier;
+
+	@JsonProperty("Buyer")
+	private BuyerResponse buyer;
+
+	@JsonProperty("TransporterCNPJ")
+	private String transporterCNPJ;
+
+	@JsonProperty("Status")
+	private String status;
+
+	@JsonProperty("HeaderNote")
+	private String headerNote;
+
+	@JsonProperty("Language")
+	private String language;
+
+	@JsonProperty("Items")
+	private List<ItemsResponse> items;
+
+	@JsonProperty("Total")
+	private Double total;
 
 	public String getReference() {
 		return reference;
@@ -156,5 +156,5 @@ public class NFeResponse {
 				+ ", buyer=" + buyer + ", transporterCNPJ=" + transporterCNPJ + ", status=" + status + ", headerNote="
 				+ headerNote + ", language=" + language + ", items=" + items + ", total=" + total + "]";
 	}
-    
+
 }

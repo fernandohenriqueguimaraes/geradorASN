@@ -5,7 +5,7 @@ import br.com.geradorASN.exception.handler.RestError;
 public class RestErrorException extends Exception {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private RestError error;
 
 	public RestErrorException(RestError error) {

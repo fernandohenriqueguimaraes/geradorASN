@@ -14,11 +14,11 @@ import br.com.geradorASN.config.CredenciaisProd;
 @Qualifier("restTriangulusProd")
 public class RestTriangulusProd extends RestTriangulusConfig {
 
-	private static final String PROTOCOL 	= "http";
-	private static final String HOST 		= "nfe.triangulus.com.br";
-	
-	private static final String GET_PATH	= "WsDisponibilizaArquivo/wsDisponibilizaArquivo.asmx/PedGeraArquivo"; 
-	
+	private static final String PROTOCOL = "http";
+	private static final String HOST = "nfe.triangulus.com.br";
+
+	private static final String GET_PATH = "WsDisponibilizaArquivo/wsDisponibilizaArquivo.asmx/PedGeraArquivo";
+
 	@Autowired
 	public RestTriangulusProd() {
 		super(PROTOCOL, HOST);
@@ -26,11 +26,11 @@ public class RestTriangulusProd extends RestTriangulusConfig {
 
 	@Override
 	public UriComponents getUriXML(String xml) throws ParseException {
-		
+
 		String path = GET_PATH + "?xml=" + xml;
 		return getUriComponents(path);
 	}
-	
+
 	@Override
 	public HttpHeaders getHeaders() {
 		return CredenciaisProd.getHeadersForTriangulus();
