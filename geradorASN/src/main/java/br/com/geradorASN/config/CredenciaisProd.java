@@ -19,5 +19,12 @@ public class CredenciaisProd {
 		return headers;
 	}
 
+	@SuppressWarnings("unchecked")
+	public static HttpHeaders getHeadersForTriangulus() {           
+		HttpHeaders headers = new HttpHeaders();            
+		headers.setContentType(MediaType.APPLICATION_XHTML_XML);
+
+		return headers;
+	}
 }
 

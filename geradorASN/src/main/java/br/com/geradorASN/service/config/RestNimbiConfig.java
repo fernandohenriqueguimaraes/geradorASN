@@ -8,13 +8,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-public abstract class RestConfig {
+public abstract class RestNimbiConfig {
 	
 	private String protocol;
 	private String host;
 	private String port;
 	
-	public RestConfig(String protocol, String host, String port) {
+	public RestNimbiConfig(String protocol, String host, String port) {
 		this.protocol = protocol;
 		this.host = host;
 		this.port = port;

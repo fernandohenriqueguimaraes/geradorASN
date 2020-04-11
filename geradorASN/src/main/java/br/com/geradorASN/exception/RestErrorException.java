@@ -11,7 +11,7 @@ public class RestErrorException extends Exception {
 	public RestErrorException(RestError error) {
 		this.error = error;
 	}
-	
+
 	public RestError getError() {
 		return error;
 	}

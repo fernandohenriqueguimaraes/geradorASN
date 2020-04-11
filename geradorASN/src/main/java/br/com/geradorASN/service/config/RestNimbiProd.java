@@ -4,12 +4,17 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
+import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponents;
 
 import br.com.geradorASN.config.CredenciaisProd;
 
-public class RestNimbiProd extends RestConfig {
+@Component
+@Qualifier("restNimbiProd")
+public class RestNimbiProd extends RestNimbiConfig {
 	
 	private static final String PROTOCOL 	= "https";
 	private static final String HOST 		= "api001.nimbi.com.br";
@@ -19,10 +24,12 @@ public class RestNimbiProd extends RestConfig {
 	
 	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	
+	@Autowired
 	public RestNimbiProd() {
 		super(PROTOCOL, HOST, PORT);
 	}
 
+	@Override
 	public UriComponents getUriPeriodo(String strInicio, String strFim) throws ParseException {
 		
 		Date dtInicio 				= sdf.parse(strInicio);
@@ -36,6 +43,7 @@ public class RestNimbiProd extends RestConfig {
 		return getUriComponents(path);
 	}
 
+	@Override
 	public HttpHeaders getHeaders() {
 		return CredenciaisProd.getHeaders();
 	}

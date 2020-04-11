@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import br.com.geradorASN.service.config.RestConfig;
+import br.com.geradorASN.service.config.RestNimbiConfig;
 
 @ComponentScan(basePackages = {"br.com.geradorASN"})
 @Configuration
@@ -16,34 +16,8 @@ import br.com.geradorASN.service.config.RestConfig;
 @SpringBootApplication
 public class GeradorAsnApplication {
 	
-	private static RestConfig REST_CONFIG = null;
-	
-	private static final String PACOTE = "br.com.geradorASN.service.config.RestNimbiProd";
-
 	public static void main(String[] args) {
-		
-		try {
-			
-			Class<?> clazz = Class.forName(PACOTE);
-			RestConfig restConfig = (RestConfig) clazz.newInstance();
-			
-			REST_CONFIG = restConfig;
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 		SpringApplication.run(GeradorAsnApplication.class, args);
 	}
 	
-	@Bean
-	public HttpHeaders createHeaders() {
-		return REST_CONFIG.getHeaders();
-	}
-	
-	@Bean
-	public RestConfig getRestConfig() {
-		return REST_CONFIG;
-	}
-
 }

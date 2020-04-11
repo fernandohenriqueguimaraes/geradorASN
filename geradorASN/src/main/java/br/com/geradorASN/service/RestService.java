@@ -2,7 +2,6 @@ package br.com.geradorASN.service;
 
 import java.util.Arrays;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,9 +17,6 @@ import br.com.geradorASN.exception.handler.RestError;
 
 @Service("restService")
 public class RestService {
-	
-	@Autowired
-	private HttpHeaders headers;
 
 	private RestTemplate restTemplate;
 	
@@ -28,7 +24,7 @@ public class RestService {
 		restTemplate = new RestTemplate();
 	}
 
-	public ResponseEntity<?> request(UriComponents uri, HttpMethod httpMethod, Object request, Class<?> clazz) throws RestErrorException {
+	public ResponseEntity<?> request(UriComponents uri, HttpHeaders headers, HttpMethod httpMethod, Object request, Class<?> clazz) throws RestErrorException {
 		try {
 			return restTemplate.exchange(uri.toUriString(), httpMethod, new HttpEntity<>(request, headers), clazz);
 		} catch (HttpClientErrorException | HttpServerErrorException e) {
@@ -40,6 +36,5 @@ public class RestService {
 			throw new RestErrorException(error);
 		}
 	}
-	
 
 }
