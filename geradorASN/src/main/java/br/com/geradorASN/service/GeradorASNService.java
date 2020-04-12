@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.Document;
 
+import br.com.geradorASN.entity.MapeamentoDados;
 import br.com.geradorASN.entity.xml.Gerado;
 import br.com.geradorASN.entity.xml.NotaFiscalEletronicaTriangulus;
 import br.com.geradorASN.exception.RestErrorException;
@@ -29,14 +30,12 @@ public class GeradorASNService {
 	@Autowired
 	private ZipService zipService;
 
-	public List<Document> consultarArquivosZip() throws RestErrorException, ParseException, IOException, ClassNotFoundException {
+	public List<MapeamentoDados> gerarASN() throws RestErrorException, ParseException, IOException, ClassNotFoundException {
 
-		List<Gerado> listaGerado = new ArrayList<Gerado>();
-		List<Document> nfeTriangulusDocumentBuilderList = new ArrayList<Document>();
-		listaGerado = nimbiService.consultarArquivosZip();
-		nfeTriangulusDocumentBuilderList = zipService.consultarArquivosZip(listaGerado);
+		List<MapeamentoDados> mapeamentoDadosList = new ArrayList<MapeamentoDados>();
+		mapeamentoDadosList = zipService.consultarArquivosZip(nimbiService.consultarXMLCaminhoZip());
 		// parametroService.updateParametroDataCorte();
-		return nfeTriangulusDocumentBuilderList;
+		return mapeamentoDadosList;
 
 	}
 	

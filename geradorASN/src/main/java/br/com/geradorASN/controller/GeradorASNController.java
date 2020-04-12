@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.w3c.dom.Document;
 
 import br.com.geradorASN.entity.Empresa;
+import br.com.geradorASN.entity.MapeamentoDados;
 import br.com.geradorASN.entity.Produto;
 import br.com.geradorASN.entity.xml.Gerado;
 import br.com.geradorASN.entity.xml.NotaFiscalEletronicaTriangulus;
@@ -77,15 +78,15 @@ public class GeradorASNController {
 
 	@RequestMapping(value = "/gerarASN", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Document> gerarASN() {
-		List<Document> nfeTriangulusDocumentBuilderList = new ArrayList<Document>();
+	public List<MapeamentoDados> gerarASN() {
+		List<MapeamentoDados> mapeamentoDadosList = new ArrayList<MapeamentoDados>();
 		try {
-			nfeTriangulusDocumentBuilderList = (List<Document>) geradorASNService.consultarArquivosZip();
+			mapeamentoDadosList = (List<MapeamentoDados>) geradorASNService.gerarASN();
 		} catch (RestErrorException | ParseException | IOException | ClassNotFoundException e) {
 			log.error(e.getMessage());
 			e.printStackTrace();
 		}
-		return nfeTriangulusDocumentBuilderList;
+		return mapeamentoDadosList;
 
 	}
 }

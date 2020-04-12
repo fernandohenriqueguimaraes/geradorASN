@@ -20,6 +20,7 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import br.com.geradorASN.dao.ParametroDao;
+import br.com.geradorASN.entity.MapeamentoDados;
 import br.com.geradorASN.entity.rest.v1.get.response.NotaFiscalEletronicaNimbiResponse;
 import br.com.geradorASN.entity.xml.Gerado;
 import br.com.geradorASN.entity.xml.PedGeraArquivo;
@@ -52,14 +53,15 @@ public class NimbiService {
 	@Autowired
 	private RestService restService;
 
-	public List<Gerado> consultarArquivosZip() throws RestErrorException, ParseException, ClassNotFoundException {
+	public List<MapeamentoDados> consultarXMLCaminhoZip()
+			throws RestErrorException, ParseException, ClassNotFoundException {
 		return consultarXMLCaminhoZip(consultarXMLNotaFiscalEletronicaNimbi());
 	}
 
-	private List<Gerado> consultarXMLCaminhoZip(NotaFiscalEletronicaNimbiResponse notaFiscalEletronica)
+	private List<MapeamentoDados> consultarXMLCaminhoZip(NotaFiscalEletronicaNimbiResponse notaFiscalEletronica)
 			throws ParseException, RestErrorException {
 
-		List<Gerado> listaGerado = new ArrayList<Gerado>();
+		List<MapeamentoDados> mapeamentoDadosList = new ArrayList<MapeamentoDados>();
 		String nota = parametroService.getParametroByChave(PARAMETRO_TIPO_NOTA);
 		String modelo = parametroService.getParametroByChave(PARAMETRO_MODELO_NOTA);
 
@@ -70,9 +72,10 @@ public class NimbiService {
 					.setFilial(getFilial(notaFiscal.getSupplier().getSupplierCNPJ())).setTipo(nota).setModelo(modelo);
 
 			try {
-				
-				listaGerado.add(triangulusService.consultarXMLCaminhoZip(CharMatcher.breakingWhitespace()
-						.removeFrom(XMLUtil.createXtream(CLASSE_PED_GERA_ARQUIVO).toXML(xmlObject))));
+
+				mapeamentoDadosList.add(new MapeamentoDados().setNfeNimbi(notaFiscal).setPedGeraArquivo(xmlObject)
+						.setGerado((triangulusService.consultarXMLCaminhoZip(CharMatcher.breakingWhitespace()
+								.removeFrom(XMLUtil.createXtream(CLASSE_PED_GERA_ARQUIVO).toXML(xmlObject))))));
 
 			} catch (ParseException ex) {
 				log.error(ex.getMessage());
@@ -87,15 +90,15 @@ public class NimbiService {
 
 		});
 
-		return listaGerado;
+		return mapeamentoDadosList;
 	}
 
 	@SuppressWarnings("unchecked")
 	private NotaFiscalEletronicaNimbiResponse consultarXMLNotaFiscalEletronicaNimbi()
 			throws RestErrorException, ParseException {
 
-		UriComponents uri = restNimbiConfig.getUriPeriodo(parametroService.getParametroByChave(parametroService.PARAMETRO_DATA_CORTE),
-				DataUtil.getDataHoje());
+		UriComponents uri = restNimbiConfig.getUriPeriodo(
+				parametroService.getParametroByChave(parametroService.PARAMETRO_DATA_CORTE), DataUtil.getDataHoje());
 
 		log.info("Endpoint de consulta ao Nimbi: {}", uri.toUriString());
 		ResponseEntity<NotaFiscalEletronicaNimbiResponse> response = (ResponseEntity<NotaFiscalEletronicaNimbiResponse>) (restService

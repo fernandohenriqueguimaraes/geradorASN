@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
@@ -24,18 +23,10 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
-
+import br.com.geradorASN.entity.MapeamentoDados;
 import br.com.geradorASN.entity.xml.Gerado;
-import br.com.geradorASN.entity.xml.NfeProc;
-import br.com.geradorASN.entity.xml.NotaFiscalEletronicaTriangulus;
-import br.com.geradorASN.util.XMLUtil;
 
 @Transactional
 @Service("zipService")
@@ -46,26 +37,22 @@ public class ZipService {
 	private static String ZIP_DESTINATION_FOLDER = "src/main/resources/zip/";
 
 	private static String XML_DESTINATION_FOLDER = "src/main/resources/xml/";
-	
-	private static String CLASSE_NFE_TRIANGULUS = "NfeProc";
 
 	@Autowired
 	ResourceLoader resourceLoader;
 
-	public List<Document> consultarArquivosZip(List<Gerado> listaGerado) throws IOException, ZipException {
+	public List<MapeamentoDados> consultarArquivosZip(List<MapeamentoDados> mapeamentoDadosList) throws IOException, ZipException {
 
 		File xmlDestinationDirectory = createFileDirectory(XML_DESTINATION_FOLDER);
 		File zipDestinationDirectory = createFileDirectory(ZIP_DESTINATION_FOLDER);
-		
-		List<Document> nfeTriangulusDocumentBuilderList = new ArrayList<Document>();
 
-		listaGerado.forEach(gerado -> {
+			mapeamentoDadosList.forEach(mapeamento -> {
 			try {
-				baixarZip(gerado);
-				extrairZip(gerado);
-				deleteFile(ZIP_DESTINATION_FOLDER, gerado.getFileName());
-				nfeTriangulusDocumentBuilderList.add(lerXMLExtraido(gerado));
-				deleteFile(XML_DESTINATION_FOLDER, gerado.getFileNameXMLExtension());
+				baixarZip(mapeamento.getGerado());
+				extrairZip(mapeamento.getGerado());
+				deleteFile(ZIP_DESTINATION_FOLDER, mapeamento.getGerado().getFileName());
+				mapeamento.setNfeTriangulusDocument(lerXMLExtraido(mapeamento.getGerado()));
+				deleteFile(XML_DESTINATION_FOLDER, mapeamento.getGerado().getFileNameXMLExtension());
 			} catch (IOException ex) {
 				log.error(ex.getMessage());
 				ex.printStackTrace();
@@ -85,7 +72,7 @@ public class ZipService {
 		deleteFileDirectory(zipDestinationDirectory);
 		deleteFileDirectory(xmlDestinationDirectory);
 		
-		return nfeTriangulusDocumentBuilderList;
+		return mapeamentoDadosList;
 
 	}
 
@@ -97,7 +84,6 @@ public class ZipService {
 
 		DocumentBuilder db = dbf.newDocumentBuilder();  
 		Document nfeTriangulusDocumentBuilder = db.parse(file);  
-		nfeTriangulusDocumentBuilder.getDocumentElement().normalize();  
 		
 		return nfeTriangulusDocumentBuilder;
 	}
