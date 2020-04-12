@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.w3c.dom.Document;
 
 import br.com.geradorASN.entity.Empresa;
 import br.com.geradorASN.entity.Produto;
 import br.com.geradorASN.entity.xml.Gerado;
+import br.com.geradorASN.entity.xml.NotaFiscalEletronicaTriangulus;
 import br.com.geradorASN.exception.RestErrorException;
 import br.com.geradorASN.service.EmpresaService;
 import br.com.geradorASN.service.GeradorASNService;
@@ -75,15 +77,15 @@ public class GeradorASNController {
 
 	@RequestMapping(value = "/gerarASN", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Gerado> gerarASN() {
-		List<Gerado> listaGerado = new ArrayList<Gerado>();
+	public List<Document> gerarASN() {
+		List<Document> nfeTriangulusDocumentBuilderList = new ArrayList<Document>();
 		try {
-			listaGerado = (List<Gerado>) geradorASNService.consultarArquivosZip();
+			nfeTriangulusDocumentBuilderList = (List<Document>) geradorASNService.consultarArquivosZip();
 		} catch (RestErrorException | ParseException | IOException | ClassNotFoundException e) {
 			log.error(e.getMessage());
 			e.printStackTrace();
 		}
-		return listaGerado;
+		return nfeTriangulusDocumentBuilderList;
 
 	}
 }

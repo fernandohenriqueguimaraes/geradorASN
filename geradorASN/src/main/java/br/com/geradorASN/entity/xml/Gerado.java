@@ -31,6 +31,10 @@ public class Gerado {
 		String[] pathSplit = path.split("/");
 		return pathSplit[pathSplit.length - 1];
 	}
+	
+	public String getFileNameXMLExtension() {
+		return getFileName().replace(".zip", ".xml");
+	}
 
 	public Gerado setPath(String path) {
 		this.path = path;

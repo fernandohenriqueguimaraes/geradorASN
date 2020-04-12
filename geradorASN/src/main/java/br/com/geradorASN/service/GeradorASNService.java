@@ -10,8 +10,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.w3c.dom.Document;
 
 import br.com.geradorASN.entity.xml.Gerado;
+import br.com.geradorASN.entity.xml.NotaFiscalEletronicaTriangulus;
 import br.com.geradorASN.exception.RestErrorException;
 
 @Transactional
@@ -27,13 +29,14 @@ public class GeradorASNService {
 	@Autowired
 	private ZipService zipService;
 
-	public List<Gerado> consultarArquivosZip() throws RestErrorException, ParseException, IOException, ClassNotFoundException {
+	public List<Document> consultarArquivosZip() throws RestErrorException, ParseException, IOException, ClassNotFoundException {
 
 		List<Gerado> listaGerado = new ArrayList<Gerado>();
+		List<Document> nfeTriangulusDocumentBuilderList = new ArrayList<Document>();
 		listaGerado = nimbiService.consultarArquivosZip();
-		zipService.baixarArquivosZip(listaGerado);
+		nfeTriangulusDocumentBuilderList = zipService.consultarArquivosZip(listaGerado);
 		// parametroService.updateParametroDataCorte();
-		return listaGerado;
+		return nfeTriangulusDocumentBuilderList;
 
 	}
 	
