@@ -57,11 +57,10 @@ public class TriangulusService {
 
 	private String tratamentoStringTriangulus(String xml) {
 		return StringUtils.replaceEach(CharMatcher.breakingWhitespace().removeFrom(xml),
-				new String[] { "&lt;", "&quot;", "&apos;", "&gt;",
+				new String[] { "&lt;", "&quot;", "&apos;", "&gt;", 
 						"<?xmlversion=\"1.0\"encoding=\"utf-8\"?><stringxmlns=\"http://www.triangulus.com.br/\">",
-						"</string>" },
-				new String[] { "<", "\"", "'", ">", StringUtils.EMPTY, StringUtils.EMPTY });
-
+						"</string>", "?xml=" },
+				new String[] { "<", "\"", "'", ">", StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY});
 	}
 
 }

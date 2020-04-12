@@ -18,3 +18,4 @@ geradorASN/.mvn/
 *.gz
 geradorASN/src/main/resources/xmlNimbi/
 *.xml
+geradorASN/src/main/resources/xml/

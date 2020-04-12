@@ -25,6 +25,7 @@ import br.com.geradorASN.entity.xml.Gerado;
 import br.com.geradorASN.entity.xml.PedGeraArquivo;
 import br.com.geradorASN.exception.RestErrorException;
 import br.com.geradorASN.service.config.RestNimbiConfig;
+import br.com.geradorASN.util.DataUtil;
 import br.com.geradorASN.util.XMLUtil;
 
 @Transactional
@@ -33,13 +34,9 @@ public class NimbiService {
 
 	private static final Logger log = LoggerFactory.getLogger(NimbiService.class);
 
-	private static String PARAMETRO_DATA_CORTE = "DataCorte";
-
 	private static String PARAMETRO_TIPO_NOTA = "TipoNota";
 
 	private static String PARAMETRO_MODELO_NOTA = "ModeloNota";
-
-	private static String FORMATO_DATA_ENTRADA = "dd/MM/yyyy";
 
 	private static String CLASSE_PED_GERA_ARQUIVO = "PedGeraArquivo";
 
@@ -55,10 +52,8 @@ public class NimbiService {
 	@Autowired
 	private RestService restService;
 
-	public List<Gerado> consultarArquivosZip() throws RestErrorException, ParseException {
-
+	public List<Gerado> consultarArquivosZip() throws RestErrorException, ParseException, ClassNotFoundException {
 		return consultarXMLCaminhoZip(consultarXMLNotaFiscalEletronicaNimbi());
-
 	}
 
 	private List<Gerado> consultarXMLCaminhoZip(NotaFiscalEletronicaNimbiResponse notaFiscalEletronica)
@@ -75,14 +70,18 @@ public class NimbiService {
 					.setFilial(getFilial(notaFiscal.getSupplier().getSupplierCNPJ())).setTipo(nota).setModelo(modelo);
 
 			try {
+				
 				listaGerado.add(triangulusService.consultarXMLCaminhoZip(CharMatcher.breakingWhitespace()
 						.removeFrom(XMLUtil.createXtream(CLASSE_PED_GERA_ARQUIVO).toXML(xmlObject))));
 
 			} catch (ParseException ex) {
+				log.error(ex.getMessage());
 				ex.printStackTrace();
 			} catch (RestErrorException ex) {
+				log.error(ex.getMessage());
 				ex.printStackTrace();
 			} catch (ClassNotFoundException e) {
+				log.error(e.getMessage());
 				e.printStackTrace();
 			}
 
@@ -95,8 +94,8 @@ public class NimbiService {
 	private NotaFiscalEletronicaNimbiResponse consultarXMLNotaFiscalEletronicaNimbi()
 			throws RestErrorException, ParseException {
 
-		UriComponents uri = restNimbiConfig.getUriPeriodo(parametroService.getParametroByChave(PARAMETRO_DATA_CORTE),
-				getDataHoje());
+		UriComponents uri = restNimbiConfig.getUriPeriodo(parametroService.getParametroByChave(parametroService.PARAMETRO_DATA_CORTE),
+				DataUtil.getDataHoje());
 
 		log.info("Endpoint de consulta ao Nimbi: {}", uri.toUriString());
 		ResponseEntity<NotaFiscalEletronicaNimbiResponse> response = (ResponseEntity<NotaFiscalEletronicaNimbiResponse>) (restService
@@ -107,10 +106,6 @@ public class NimbiService {
 
 		return response.getBody();
 
-	}
-
-	private String getDataHoje() {
-		return (new SimpleDateFormat(FORMATO_DATA_ENTRADA)).format(new Date());
 	}
 
 	private String getFilial(String supplierCNPJ) {

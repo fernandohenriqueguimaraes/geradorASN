@@ -79,7 +79,8 @@ public class GeradorASNController {
 		List<Gerado> listaGerado = new ArrayList<Gerado>();
 		try {
 			listaGerado = (List<Gerado>) geradorASNService.consultarArquivosZip();
-		} catch (RestErrorException | ParseException e) {
+		} catch (RestErrorException | ParseException | IOException | ClassNotFoundException e) {
+			log.error(e.getMessage());
 			e.printStackTrace();
 		}
 		return listaGerado;
