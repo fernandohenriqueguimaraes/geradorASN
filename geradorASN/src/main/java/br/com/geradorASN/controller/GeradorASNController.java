@@ -12,17 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.w3c.dom.Document;
 
 import br.com.geradorASN.entity.Empresa;
 import br.com.geradorASN.entity.MapeamentoDados;
 import br.com.geradorASN.entity.Produto;
-import br.com.geradorASN.entity.xml.Gerado;
-import br.com.geradorASN.entity.xml.NotaFiscalEletronicaTriangulus;
+import br.com.geradorASN.entity.rest.v1.post.request.AdvancedShipmentNotificationPost;
 import br.com.geradorASN.exception.RestErrorException;
 import br.com.geradorASN.service.EmpresaService;
 import br.com.geradorASN.service.GeradorASNService;
-import br.com.geradorASN.service.NimbiService;
 import br.com.geradorASN.service.ProdutoService;
 
 /**
@@ -78,15 +75,15 @@ public class GeradorASNController {
 
 	@RequestMapping(value = "/gerarASN", method = RequestMethod.GET)
 	@ResponseBody
-	public List<MapeamentoDados> gerarASN() {
-		List<MapeamentoDados> mapeamentoDadosList = new ArrayList<MapeamentoDados>();
+	public List<AdvancedShipmentNotificationPost> gerarASN() {
+		List<AdvancedShipmentNotificationPost> advancedShipmentNotificationPostList = new ArrayList<AdvancedShipmentNotificationPost>();
 		try {
-			mapeamentoDadosList = (List<MapeamentoDados>) geradorASNService.gerarASN();
+			advancedShipmentNotificationPostList = (List<AdvancedShipmentNotificationPost>) geradorASNService.gerarASN();
 		} catch (RestErrorException | ParseException | IOException | ClassNotFoundException e) {
 			log.error(e.getMessage());
 			e.printStackTrace();
 		}
-		return mapeamentoDadosList;
+		return advancedShipmentNotificationPostList;
 
 	}
 }
