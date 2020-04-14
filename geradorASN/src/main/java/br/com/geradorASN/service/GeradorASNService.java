@@ -51,7 +51,7 @@ public class GeradorASNService {
 
 		List<AdvancedShipmentNotificationPost> advancedShipmentNotificationPostList = gerarRelatorio(
 				zipService.consultarArquivosZip(nimbiService.consultarXMLCaminhoZip()));
-		// parametroService.updateParametroDataCorte();
+		parametroService.updateParametroDataCorte();
 
 		return advancedShipmentNotificationPostList;
 
