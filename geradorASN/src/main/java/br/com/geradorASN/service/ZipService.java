@@ -34,6 +34,7 @@ import br.com.geradorASN.entity.MapeamentoDados;
 import br.com.geradorASN.entity.rest.v1.post.request.ASNItem;
 import br.com.geradorASN.entity.rest.v1.post.request.AdvancedShipmentNotificationPost;
 import br.com.geradorASN.entity.xml.Gerado;
+import br.com.geradorASN.util.DataUtil;
 
 @Transactional
 @Service("zipService")
@@ -60,15 +61,22 @@ public class ZipService {
 	private static String CODIGO_XML_ENDERECO_BAIRRO      				  = "xBairro";
 	private static String CODIGO_XML_ENDERECO_CEP     	 				  = "CEP";
 	private static String CODIGO_XML_ENDERECO_MUNICIPIO  				  = "xMun";
+	private static String CODIGO_XML_ENDERECO_CODIGO_MUNICIPIO		   	  = "cMun";
 	private static String CODIGO_XML_ENDERECO_TELEFONE   				  = "fone";
-	private static String CODIGO_XML_ENDERECO_LOGRADOURO_FORNECEDOR       = "xEnder";
 	private static String CODIGO_XML_VALOR_NOTA_FISCAL			          = "vNF";
 	private static String CODIGO_XML_DATA_EMISSAO				          = "dhEmi";
 	private static String CODIGO_XML_CHAVE_ACESSO_NOTA_FISCAL_ELETRONICA  = "infNFe";
-	private static String CODIGO_XML_OBSERVATION_TEXT			          = "infCpl";
 	private static String CODIGO_XML_PESO_BRUTO_TOTAL				      = "pesoB";
 	private static String CODIGO_XML_CODIGO_ISO_PAIS				      = "xPais";
-	private static String UNIDADE_MEDIDA_METRO_CUBICO				      = "m3";
+	private static String CODIGO_XML_CODIGO_INTERNO_FORNECEDOR 			  = "nItemPed";
+	private static String OBSERVATION_TEXT_DEFAULT_VALUE 				  = "ASN - Processo Automatico Michelin";
+	private static String ASN_INITIAL_STATUS 							  = "ZA";
+	private static String CODIGO_SPECIAL_PROCESS_CODE 					  = "BR01";
+	private static String CODIGO_SUPPLIER_COUNTRY_CODE 					  = "BR";
+	private static String DEFAULT_FRAGILE_LOAD_STATUS 					  = "Não";
+	private static String DEFAULT_TRANSPORTATION_MODE_CODE				  = "01";
+	private static String DEFAULT_TRANSPORTATION_TYPE 					  = "A";
+	private static String DEFAULT_USERNAME 								  = "jullyane.sabino@michelin.com";
 
 	@Autowired
 	ResourceLoader resourceLoader;
@@ -140,15 +148,15 @@ public class ZipService {
 								? eElement.getElementsByTagName(CODIGO_XML_NUMERO_PEDIDO).item(0).getTextContent()
 								: StringUtils.EMPTY);
 				asnItem.getPurchaseOrder().getPurchaseOrderItem()
-						.setPurchaseOrderItemNumber(eElement.getElementsByTagName(CODIGO_XML_CODIGO_PRODUTO).item(0) != null
-								? eElement.getElementsByTagName(CODIGO_XML_CODIGO_PRODUTO).item(0).getTextContent()
+						.setPurchaseOrderItemNumber(eElement.getElementsByTagName(CODIGO_XML_CODIGO_INTERNO_FORNECEDOR).item(0) != null
+								? eElement.getElementsByTagName(CODIGO_XML_CODIGO_INTERNO_FORNECEDOR).item(0).getTextContent()
 								: StringUtils.EMPTY);
 				asnItem.getPurchaseOrder().getPurchaseOrderItem()
 						.setDescription(eElement.getElementsByTagName(CODIGO_XML_DESCRICAO_ITEM).item(0) != null
 								? eElement.getElementsByTagName(CODIGO_XML_DESCRICAO_ITEM).item(0).getTextContent()
 								: StringUtils.EMPTY);
 				asnItem.getPurchaseOrder().getPurchaseOrderItem()
-						.setPurchaseOrderItemNCM(eElement.getElementsByTagName(CODIGO_XML_NCM_ITEM ).item(0) != null
+						.setPurchaseOrderItemNCM(eElement.getElementsByTagName(CODIGO_XML_NCM_ITEM).item(0) != null
 								? eElement.getElementsByTagName(CODIGO_XML_NCM_ITEM).item(0).getTextContent()
 								: StringUtils.EMPTY);
 				asnItem.getPurchaseOrder().getPurchaseOrderItem()
@@ -197,39 +205,20 @@ public class ZipService {
 								? eElement.getElementsByTagName(CODIGO_XML_ENDERECO_TELEFONE).item(0).getTextContent()
 								: StringUtils.EMPTY);
 				asnItem.getShipToItem().getAddress()
-						.setCityCode(eElement.getElementsByTagName(CODIGO_XML_ENDERECO_MUNICIPIO).item(0) != null
-								? eElement.getElementsByTagName(CODIGO_XML_ENDERECO_MUNICIPIO).item(0).getTextContent()
-								: StringUtils.EMPTY);
-				advancedShipmentNotificationPost.getCarrier()
-						.setName(eElement.getElementsByTagName(CODIGO_XML_RAZAO_SOCIAL).item(0) != null
-								? eElement.getElementsByTagName(CODIGO_XML_RAZAO_SOCIAL).item(0).getTextContent()
-								: StringUtils.EMPTY);
-				advancedShipmentNotificationPost.getCarrier()
-						.setFiscalIdentifier(eElement.getElementsByTagName(CODIGO_XML_CNPJ).item(0) != null
-								? eElement.getElementsByTagName(CODIGO_XML_CNPJ).item(0).getTextContent()
-								: StringUtils.EMPTY);
-				advancedShipmentNotificationPost.getCarrier().getAddress()
-						.setStreetAddress(eElement.getElementsByTagName(CODIGO_XML_ENDERECO_LOGRADOURO_FORNECEDOR).item(0) != null
-								? eElement.getElementsByTagName(CODIGO_XML_ENDERECO_LOGRADOURO_FORNECEDOR).item(0).getTextContent()
-								: StringUtils.EMPTY);
-				advancedShipmentNotificationPost.getCarrier().getAddress()
-						.setCityName(eElement.getElementsByTagName(CODIGO_XML_ENDERECO_MUNICIPIO).item(0) != null
-								? eElement.getElementsByTagName(CODIGO_XML_ENDERECO_MUNICIPIO).item(0).getTextContent()
+						.setCityCode(eElement.getElementsByTagName(CODIGO_XML_ENDERECO_CODIGO_MUNICIPIO).item(0) != null
+								? eElement.getElementsByTagName(CODIGO_XML_ENDERECO_CODIGO_MUNICIPIO).item(0).getTextContent()
 								: StringUtils.EMPTY);
 				advancedShipmentNotificationPost
 						.setInvoiceValueAmount(new BigDecimal(eElement.getElementsByTagName(CODIGO_XML_VALOR_NOTA_FISCAL).item(0) != null
 								? eElement.getElementsByTagName(CODIGO_XML_VALOR_NOTA_FISCAL).item(0).getTextContent()
 								: StringUtils.EMPTY));
 				advancedShipmentNotificationPost.setIssuingDate(eElement.getElementsByTagName(CODIGO_XML_DATA_EMISSAO).item(0) != null
-						? eElement.getElementsByTagName(CODIGO_XML_DATA_EMISSAO).item(0).getTextContent()
+						? DataUtil.getIssuingDateFormat(eElement.getElementsByTagName(CODIGO_XML_DATA_EMISSAO).item(0).getTextContent())
 						: StringUtils.EMPTY);
 				advancedShipmentNotificationPost.setNfeNumber(eElement.getElementsByTagName(CODIGO_XML_CHAVE_ACESSO_NOTA_FISCAL_ELETRONICA).item(0) != null
 						? eElement.getElementsByTagName(CODIGO_XML_CHAVE_ACESSO_NOTA_FISCAL_ELETRONICA).item(0).getTextContent()
 						: StringUtils.EMPTY);
-				advancedShipmentNotificationPost
-						.setObservationTEXT(eElement.getElementsByTagName(CODIGO_XML_OBSERVATION_TEXT).item(0) != null
-								? eElement.getElementsByTagName(CODIGO_XML_OBSERVATION_TEXT).item(0).getTextContent()
-								: StringUtils.EMPTY);
+				
 				advancedShipmentNotificationPost.getReclaimOrigin()
 						.setName(eElement.getElementsByTagName(CODIGO_XML_RAZAO_SOCIAL).item(0) != null
 								? eElement.getElementsByTagName(CODIGO_XML_RAZAO_SOCIAL).item(0).getTextContent()
@@ -258,8 +247,8 @@ public class ZipService {
 								? eElement.getElementsByTagName(CODIGO_XML_ENDERECO_MUNICIPIO).item(0).getTextContent()
 								: StringUtils.EMPTY);
 				advancedShipmentNotificationPost.getReclaimOrigin().getAddress()
-						.setCityCode(eElement.getElementsByTagName(CODIGO_XML_ENDERECO_MUNICIPIO).item(0) != null
-								? eElement.getElementsByTagName(CODIGO_XML_ENDERECO_MUNICIPIO).item(0).getTextContent()
+						.setCityCode(eElement.getElementsByTagName(CODIGO_XML_ENDERECO_CODIGO_MUNICIPIO).item(0) != null
+								? eElement.getElementsByTagName(CODIGO_XML_ENDERECO_CODIGO_MUNICIPIO).item(0).getTextContent()
 								: StringUtils.EMPTY);
 				advancedShipmentNotificationPost.getShipTo()
 						.setName(eElement.getElementsByTagName(CODIGO_XML_RAZAO_SOCIAL).item(0) != null
@@ -299,8 +288,8 @@ public class ZipService {
 								: StringUtils.EMPTY);
 				;
 				advancedShipmentNotificationPost.getShipTo().getAddress()
-						.setCityCode(eElement.getElementsByTagName(CODIGO_XML_ENDERECO_MUNICIPIO).item(0) != null
-								? eElement.getElementsByTagName(CODIGO_XML_ENDERECO_MUNICIPIO).item(0).getTextContent()
+						.setCityCode(eElement.getElementsByTagName(CODIGO_XML_ENDERECO_CODIGO_MUNICIPIO).item(0) != null
+								? eElement.getElementsByTagName(CODIGO_XML_ENDERECO_CODIGO_MUNICIPIO).item(0).getTextContent()
 								: StringUtils.EMPTY);
 				;
 				advancedShipmentNotificationPost.getShipTo().getAddress()
@@ -322,7 +311,16 @@ public class ZipService {
 		}
 
 		asnItem.getPurchaseOrder().getPurchaseOrderItem().setIsServiceType(true);
-		asnItem.getUnitOfMeasurement().setDescription(UNIDADE_MEDIDA_METRO_CUBICO);
+		advancedShipmentNotificationPost.setObservationTEXT(OBSERVATION_TEXT_DEFAULT_VALUE);
+		advancedShipmentNotificationPost.setAsnStatus(ASN_INITIAL_STATUS);
+		advancedShipmentNotificationPost.setSpecialProcessCode(CODIGO_SPECIAL_PROCESS_CODE);
+		advancedShipmentNotificationPost.setSupplierCountryCode(CODIGO_SUPPLIER_COUNTRY_CODE);
+		advancedShipmentNotificationPost.setFragileLoadStatus(DEFAULT_FRAGILE_LOAD_STATUS);
+		advancedShipmentNotificationPost.setTransportationModeCode(DEFAULT_TRANSPORTATION_MODE_CODE);
+		advancedShipmentNotificationPost.setTransportationType(DEFAULT_TRANSPORTATION_TYPE);
+		advancedShipmentNotificationPost.setUsername(DEFAULT_USERNAME);
+		advancedShipmentNotificationPost.setRegisterCreationHour(DataUtil.getRegisterCreationHour());
+		advancedShipmentNotificationPost.setNfeNumber(mapeamento.getNfeNimbi().getReference());
 		advancedShipmentNotificationPost.getASNItems().add(asnItem);
 		advancedShipmentNotificationPost.setHasShiptToInItem(true);
 		mapeamento.setAdvancedShipmentNotificationPost(advancedShipmentNotificationPost);

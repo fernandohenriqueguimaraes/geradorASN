@@ -49,7 +49,7 @@ public class AdvancedShipmentNotificationPost {
 	private BigDecimal TotalWidthMeasure;
 	private BigDecimal TotalLenghtMeasure;
 	private BigDecimal TotalHeightMeasure;
-	private Integer TransportationModeCode;
+	private String TransportationModeCode;
 	private String TransportationType;
 	private BigDecimal VolumeCapacity;
 	private String VehicleType;
@@ -402,11 +402,11 @@ public class AdvancedShipmentNotificationPost {
 		TotalHeightMeasure = totalHeightMeasure;
 	}
 
-	public Integer getTransportationModeCode() {
+	public String getTransportationModeCode() {
 		return TransportationModeCode;
 	}
 
-	public void setTransportationModeCode(Integer transportationModeCode) {
+	public void setTransportationModeCode(String transportationModeCode) {
 		TransportationModeCode = transportationModeCode;
 	}
 
