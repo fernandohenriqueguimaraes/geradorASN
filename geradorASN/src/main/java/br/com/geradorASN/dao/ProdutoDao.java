@@ -13,5 +13,8 @@ public interface ProdutoDao extends CrudRepository<Produto, Integer> {
 
 	@Query("SELECT p FROM Produto p WHERE p.partNumber = ?1")
 	List<Produto> getProdutoByPartNumber(String partNumber);
+	
+	@Query("SELECT p FROM Produto p WHERE p.cad = ?1")
+	List<Produto> getProdutoByCad(String cad);
 
 }

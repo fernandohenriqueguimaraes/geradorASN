@@ -36,6 +36,7 @@ public class EmpresaService {
 		List<String[]> empresaStringList = reader.readAll();
 		
 		for (String[] empresa : empresaStringList) {
+			
 			log.info("Extraindo o PRODUTO: " + Arrays.toString(empresa));
 			Empresa empresaExtraida = new Empresa();
 			empresas.add(empresaExtraida.setCnpj(empresa[0]).setBairro(empresa[1]).setCep(empresa[2])
@@ -44,12 +45,21 @@ public class EmpresaService {
 					.setTipo(empresa[9]).setMunicipio(empresa[10]).setNumero(empresa[11]).setPais(empresa[12])
 					.setRazaoSocial(empresa[13]));
 			
+			if (!getEmpresaByCnpj(empresaExtraida.getCnpj()).isEmpty()) {
+				log.error("CNPJ já encontrado na tabela Empresa.");
+				continue;
+			}
+			
 			log.info("Persistindo todos o PRODUTO:" + empresaExtraida.toString());
 			empresaRepository.save(empresaExtraida);
 			
 		}
 		
 		return empresas;
+	}
+	
+	public List<Empresa> getEmpresaByCnpj(String cnpj) {
+		return empresaRepository.getEmpresaByCnpj(cnpj);
 	}
 
 }

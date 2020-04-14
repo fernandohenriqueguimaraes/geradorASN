@@ -18,25 +18,4 @@ public enum TipoProdutoEnum {
 		this.descricao = descricao;
 	}
 
-	public static TipoProdutoEnum toTipoProdutoEnum(String tipoProduto) {
-
-		switch (tipoProduto) {
-		case "Anel":
-			return ANEL;
-		case "Camara":
-			return CAMARA;
-		case "MEMS":
-			return MEMS;
-		case "Pasta de Montagem":
-			return PASTA;
-		case "Pneu":
-			return PNEU;
-		case "Protetor":
-			return PROTETOR;
-		default:
-			return null;
-		}
-
-	}
-
 }

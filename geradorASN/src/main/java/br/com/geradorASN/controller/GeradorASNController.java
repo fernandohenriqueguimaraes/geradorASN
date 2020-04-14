@@ -17,6 +17,8 @@ import br.com.geradorASN.entity.Empresa;
 import br.com.geradorASN.entity.MapeamentoDados;
 import br.com.geradorASN.entity.Produto;
 import br.com.geradorASN.entity.rest.v1.post.request.AdvancedShipmentNotificationPost;
+import br.com.geradorASN.exception.EmpresaNotFoundException;
+import br.com.geradorASN.exception.ProdutoNotFoundException;
 import br.com.geradorASN.exception.RestErrorException;
 import br.com.geradorASN.service.EmpresaService;
 import br.com.geradorASN.service.GeradorASNService;
@@ -80,6 +82,12 @@ public class GeradorASNController {
 		try {
 			advancedShipmentNotificationPostList = (List<AdvancedShipmentNotificationPost>) geradorASNService.gerarASN();
 		} catch (RestErrorException | ParseException | IOException | ClassNotFoundException e) {
+			log.error(e.getMessage());
+			e.printStackTrace();
+		} catch (EmpresaNotFoundException e) {
+			log.error(e.getMessage());
+			e.printStackTrace();
+		} catch (ProdutoNotFoundException e) {
 			log.error(e.getMessage());
 			e.printStackTrace();
 		}

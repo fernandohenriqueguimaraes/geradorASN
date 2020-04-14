@@ -63,7 +63,7 @@ public class Empresa implements Serializable {
 	private String codigoERP;
 
 	@Column(name = "geraASN", nullable = false)
-	private boolean geraASN;
+	private Boolean geraASN;
 
 	public String getBairro() {
 		return bairro;

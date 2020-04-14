@@ -38,8 +38,7 @@ public class Produto implements Serializable {
 	private String modelo;
 
 	@Column(name = "tipoProduto", length = 20)
-	@Enumerated(EnumType.STRING)
-	private TipoProdutoEnum tipoProduto;
+	private String tipoProduto;
 
 	@Column(name = "unidadeMedida", length = 10)
 	private String unidadeMedida;
@@ -74,11 +73,11 @@ public class Produto implements Serializable {
 		return this;
 	}
 
-	public TipoProdutoEnum getTipoProduto() {
+	public String getTipoProduto() {
 		return tipoProduto;
 	}
 
-	public Produto setTipoProduto(TipoProdutoEnum tipoProduto) {
+	public Produto setTipoProduto(String tipoProduto) {
 		this.tipoProduto = tipoProduto;
 		return this;
 	}

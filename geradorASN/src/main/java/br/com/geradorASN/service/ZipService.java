@@ -123,8 +123,7 @@ public class ZipService {
 
 		nfeTriangulusDocumentBuilder.getDocumentElement().normalize();
 
-		log.info("Realizando leitura do XML " + mapeamento.getGerado().getFileNameXMLExtension() + " : "
-				+ nfeTriangulusDocumentBuilder.getTextContent());
+		log.info("Realizando leitura do XML " + mapeamento.getGerado().getFileNameXMLExtension());
 
 		NodeList nodeList = nfeTriangulusDocumentBuilder.getElementsByTagName(CODIGO_XML_TAG_RAIZ);
 
