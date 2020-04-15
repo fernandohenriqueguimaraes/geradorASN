@@ -86,7 +86,18 @@ public class GeradorASNService {
 				relatorioService.salvarRelatorio(new Relatorio()
 						.setReference(mapeamento.getNfeNimbi().getReference())
 						.setStatus(RelatorioStatusEnum.ASN_GERADO.getDescricao()));	
+				
+				mapeamento.getAdvancedShipmentNotificationPost().getReclaimOrigin().getAddress().setRegionCode(empresa.getUf());
+				mapeamento.getAdvancedShipmentNotificationPost().getShipTo().getAddress().setRegionCode(empresa.getUf());
+				mapeamento.getAdvancedShipmentNotificationPost().setShipCityTaxCode(empresa.getIbgeCode());
+				mapeamento.getAdvancedShipmentNotificationPost().setVolumeCapacity(produto.getVolume());
+				mapeamento.getAdvancedShipmentNotificationPost().setTotalHeightMeasure(produto.getAltura());
+				mapeamento.getAdvancedShipmentNotificationPost().setTotalLenghtMeasure(produto.getComprimento());
+				mapeamento.getAdvancedShipmentNotificationPost().setTotalWidthMeasure(produto.getLargura());
+				
 				listaNFeASN.add(mapeamento.getAdvancedShipmentNotificationPost());
+				
+				
 			
 			} else  {
 				relatorioService.salvarRelatorio(new Relatorio()

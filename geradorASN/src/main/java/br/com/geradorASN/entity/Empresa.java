@@ -43,6 +43,12 @@ public class Empresa implements Serializable {
 
 	@Column(name = "municipio", length = 30)
 	private String municipio;
+	
+	@Column(name = "uf", length = 3)
+	private String uf;
+	
+	@Column(name = "ibgeCode", length = 10)
+	private String ibgeCode;
 
 	@Column(name = "pais", length = 20)
 	private String pais;
@@ -196,6 +202,24 @@ public class Empresa implements Serializable {
 
 	}
 
+	public String getUf() {
+		return uf;
+	}
+
+	public Empresa setUf(String uf) {
+		this.uf = uf;
+		return this;
+	}
+
+	public String getIbgeCode() {
+		return ibgeCode;
+	}
+
+	public Empresa setIbgeCode(String ibgeCode) {
+		this.ibgeCode = ibgeCode;
+		return this;
+	}
+
 	public Empresa geraASNtoBoolean(String geraASN) {
 
 		if (geraASN.equals(geraASN)) {
@@ -221,8 +245,9 @@ public class Empresa implements Serializable {
 	public String toString() {
 		return "Empresa [id=" + id + ", cnpj=" + cnpj + ", bairro=" + bairro + ", cep=" + cep + ", logradouro="
 				+ logradouro + ", numero=" + numero + ", complemento=" + complemento + ", municipio=" + municipio
-				+ ", pais=" + pais + ", codigoPais=" + codigoPais + ", tipo=" + tipo + ", razaoSocial=" + razaoSocial
-				+ ", codigoEmpresa=" + codigoEmpresa + ", codigoERP=" + codigoERP + ", geraASN=" + geraASN + "]";
+				+ ", uf=" + uf + ", ibgeCode=" + ibgeCode + ", pais=" + pais + ", codigoPais=" + codigoPais + ", tipo="
+				+ tipo + ", razaoSocial=" + razaoSocial + ", codigoEmpresa=" + codigoEmpresa + ", codigoERP="
+				+ codigoERP + ", geraASN=" + geraASN + "]";
 	}
 
 }

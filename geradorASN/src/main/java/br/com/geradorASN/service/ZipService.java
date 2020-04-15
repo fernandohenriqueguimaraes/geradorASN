@@ -181,15 +181,15 @@ public class ZipService {
 				asnItem.getShipToItem().getAddress()
 						.setStreetAddress((eElement.getElementsByTagName(CODIGO_XML_ENDERECO_LOGRADOURO).item(0) != null
 								? eElement.getElementsByTagName(CODIGO_XML_ENDERECO_LOGRADOURO).item(0).getTextContent()
-								: StringUtils.EMPTY)
+								: StringUtils.EMPTY) + StringUtils.SPACE
 								+ (eElement.getElementsByTagName(CODIGO_XML_ENDERECO_NUMERO).item(0) != null
 										? eElement.getElementsByTagName(CODIGO_XML_ENDERECO_NUMERO).item(0).getTextContent()
 										: StringUtils.EMPTY));
 				asnItem.getShipToItem().getAddress()
 						.setComplementNumber((eElement.getElementsByTagName(CODIGO_XML_ENDERECO_COMPLEMENTO).item(0) != null
 								? eElement.getElementsByTagName(CODIGO_XML_ENDERECO_COMPLEMENTO).item(0).getTextContent()
-								: StringUtils.EMPTY)
-								+ (eElement.getElementsByTagName(CODIGO_XML_ENDERECO_BAIRRO).item(0) != null
+								: StringUtils.EMPTY) + StringUtils.SPACE +
+								 (eElement.getElementsByTagName(CODIGO_XML_ENDERECO_BAIRRO).item(0) != null
 										? eElement.getElementsByTagName(CODIGO_XML_ENDERECO_BAIRRO).item(0).getTextContent()
 										: StringUtils.EMPTY));
 				asnItem.getShipToItem().getAddress()
@@ -265,7 +265,7 @@ public class ZipService {
 				advancedShipmentNotificationPost.getShipTo().getAddress()
 						.setStreetAddress((eElement.getElementsByTagName(CODIGO_XML_ENDERECO_LOGRADOURO).item(0) != null
 								? eElement.getElementsByTagName(CODIGO_XML_ENDERECO_LOGRADOURO).item(0).getTextContent()
-								: StringUtils.EMPTY)
+								: StringUtils.EMPTY) + StringUtils.SPACE
 								+ (eElement.getElementsByTagName(CODIGO_XML_ENDERECO_NUMERO).item(0) != null
 										? eElement.getElementsByTagName(CODIGO_XML_ENDERECO_NUMERO).item(0).getTextContent()
 										: StringUtils.EMPTY));
@@ -273,7 +273,7 @@ public class ZipService {
 				advancedShipmentNotificationPost.getShipTo().getAddress()
 						.setComplementNumber((eElement.getElementsByTagName(CODIGO_XML_ENDERECO_COMPLEMENTO).item(0) != null
 								? eElement.getElementsByTagName(CODIGO_XML_ENDERECO_COMPLEMENTO).item(0).getTextContent()
-								: StringUtils.EMPTY)
+								: StringUtils.EMPTY) + StringUtils.SPACE
 								+ (eElement.getElementsByTagName(CODIGO_XML_ENDERECO_BAIRRO).item(0) != null
 										? eElement.getElementsByTagName(CODIGO_XML_ENDERECO_BAIRRO).item(0).getTextContent()
 										: StringUtils.EMPTY));

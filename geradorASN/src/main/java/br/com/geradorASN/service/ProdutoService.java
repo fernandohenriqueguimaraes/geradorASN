@@ -43,18 +43,22 @@ public class ProdutoService implements GeradorTabelasService<Produto> {
 		for (String[] produto : produtoStringList) {
 			log.info("Extraindo o PRODUTO: " + Arrays.toString(produto));
 			Produto produtoExtraido = new Produto();
-			produtos.add(produtoExtraido.setPartNumber(produto[0]).setCai(produto[1]).setCad(produto[2])
+			produtoExtraido.setPartNumber(produto[0]).setCai(produto[1]).setCad(produto[2])
 					.setModelo(produto[3]).setTipoProduto((produto[4])).setUnidadeMedida(produto[5])
 					.setVolume(new BigDecimal(produto[6])).setAltura(new BigDecimal(produto[7]))
-					.setLargura(new BigDecimal(produto[8])).setComprimento(new BigDecimal(produto[9])));
+					.setLargura(new BigDecimal(produto[8])).setComprimento(new BigDecimal(produto[9]));
 			
+			List<Produto> produtoDb = getProdutoByCad(produtoExtraido.getCad());
 			if (!getProdutoByCad(produtoExtraido.getCad()).isEmpty()) {
+				produtos.add(produtoDb.get(0));
 				log.error("CAD Michelan já encontrado na tabela Produto.");
 				continue;
 			}
 			
 			log.info("Persistindo todos o PRODUTO:" + produtoExtraido.toString());
 			produtoRepository.save(produtoExtraido);
+			
+			produtos.add(produtoExtraido);
 			
 		}
 		

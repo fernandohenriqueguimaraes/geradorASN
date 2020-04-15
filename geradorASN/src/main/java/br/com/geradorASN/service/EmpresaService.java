@@ -39,19 +39,23 @@ public class EmpresaService {
 			
 			log.info("Extraindo o PRODUTO: " + Arrays.toString(empresa));
 			Empresa empresaExtraida = new Empresa();
-			empresas.add(empresaExtraida.setCnpj(empresa[0]).setBairro(empresa[1]).setCep(empresa[2])
+			empresaExtraida.setCnpj(empresa[0]).setBairro(empresa[1]).setCep(empresa[2])
 					.setCodigoEmpresa(empresa[3]).setCodigoPais(empresa[4]).setCodigoERP(empresa[5])
 					.setComplemento(empresa[6]).geraASNtoBoolean(empresa[7]).setLogradouro(empresa[8])
-					.setTipo(empresa[9]).setMunicipio(empresa[10]).setNumero(empresa[11]).setPais(empresa[12])
-					.setRazaoSocial(empresa[13]));
+					.setTipo(empresa[9]).setMunicipio(empresa[10]).setUf(empresa[11]).setIbgeCode(empresa[12])
+					.setNumero(empresa[13]).setPais(empresa[14]).setRazaoSocial(empresa[15]);
 			
-			if (!getEmpresaByCnpj(empresaExtraida.getCnpj()).isEmpty()) {
+			List<Empresa> empresaDb = getEmpresaByCnpj(empresaExtraida.getCnpj());
+			if (!empresaDb.isEmpty()) {
+				empresas.add(empresaDb.get(0));
 				log.error("CNPJ já encontrado na tabela Empresa.");
 				continue;
 			}
 			
 			log.info("Persistindo todos o PRODUTO:" + empresaExtraida.toString());
 			empresaRepository.save(empresaExtraida);
+			
+			empresas.add(empresaExtraida);
 			
 		}
 		
