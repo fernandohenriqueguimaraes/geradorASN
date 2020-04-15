@@ -79,6 +79,8 @@ public class NimbiService {
 						pedidoResponse.getPurchaseOrderGroupGetAPI().getPurchaseOrder().getBuyerCountryCode());
 				advancedShipmentNotificationPost.getCompany().setFiscalIdentifier(
 						pedidoResponse.getPurchaseOrderGroupGetAPI().getPurchaseOrder().getBuyerTaxNumber());
+				advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrder().setPurchaseOrderNumber(
+						pedidoResponse.getPurchaseOrderGroupGetAPI().getPurchaseOrder().getId().toString());
 
 				List<OrderItems> orderItems = pedidoResponse.getPurchaseOrderGroupGetAPI().getOrderItems().stream()
 						.filter(item -> advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrder()
