@@ -69,14 +69,6 @@ public class ZipService {
 	private static String CODIGO_XML_PESO_BRUTO_TOTAL				      = "pesoB";
 	private static String CODIGO_XML_CODIGO_ISO_PAIS				      = "xPais";
 	private static String CODIGO_XML_CODIGO_INTERNO_FORNECEDOR 			  = "nItemPed";
-	private static String OBSERVATION_TEXT_DEFAULT_VALUE 				  = "ASN - Processo Automatico Michelin";
-	private static String ASN_INITIAL_STATUS 							  = "ZA";
-	private static String CODIGO_SPECIAL_PROCESS_CODE 					  = "BR01";
-	private static String CODIGO_SUPPLIER_COUNTRY_CODE 					  = "BR";
-	private static String DEFAULT_FRAGILE_LOAD_STATUS 					  = "Não";
-	private static String DEFAULT_TRANSPORTATION_MODE_CODE				  = "01";
-	private static String DEFAULT_TRANSPORTATION_TYPE 					  = "A";
-	private static String DEFAULT_USERNAME 								  = "jullyane.sabino@michelin.com";
 
 	@Autowired
 	ResourceLoader resourceLoader;
@@ -309,20 +301,8 @@ public class ZipService {
 								: new BigDecimal(0));
 			}
 		}
-
-		asnItem.getPurchaseOrder().getPurchaseOrderItem().setIsServiceType(true);
-		advancedShipmentNotificationPost.setObservationTEXT(OBSERVATION_TEXT_DEFAULT_VALUE);
-		advancedShipmentNotificationPost.setAsnStatus(ASN_INITIAL_STATUS);
-		advancedShipmentNotificationPost.setSpecialProcessCode(CODIGO_SPECIAL_PROCESS_CODE);
-		advancedShipmentNotificationPost.setSupplierCountryCode(CODIGO_SUPPLIER_COUNTRY_CODE);
-		advancedShipmentNotificationPost.setFragileLoadStatus(DEFAULT_FRAGILE_LOAD_STATUS);
-		advancedShipmentNotificationPost.setTransportationModeCode(DEFAULT_TRANSPORTATION_MODE_CODE);
-		advancedShipmentNotificationPost.setTransportationType(DEFAULT_TRANSPORTATION_TYPE);
-		advancedShipmentNotificationPost.setUsername(DEFAULT_USERNAME);
-		advancedShipmentNotificationPost.setRegisterCreationHour(DataUtil.getRegisterCreationHour());
-		advancedShipmentNotificationPost.setNfeNumber(mapeamento.getNfeNimbi().getReference());
+		
 		advancedShipmentNotificationPost.getASNItems().add(asnItem);
-		advancedShipmentNotificationPost.setHasShiptToInItem(true);
 		mapeamento.setAdvancedShipmentNotificationPost(advancedShipmentNotificationPost);
 
 		log.info("Gerado o Advanced Shipment Notification Post: " + advancedShipmentNotificationPost.toString());

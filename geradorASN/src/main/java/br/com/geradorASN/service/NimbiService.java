@@ -40,10 +40,6 @@ public class NimbiService {
 
 	private static final Logger log = LoggerFactory.getLogger(NimbiService.class);
 
-	private static String PARAMETRO_TIPO_NOTA = "TipoNota";
-
-	private static String PARAMETRO_MODELO_NOTA = "ModeloNota";
-
 	private static String CLASSE_PED_GERA_ARQUIVO = "PedGeraArquivo";
 
 	@Autowired
@@ -63,54 +59,12 @@ public class NimbiService {
 		return consultarXMLCaminhoZip(consultarXMLNotaFiscalEletronicaNimbi());
 	}
 
-	public List<AdvancedShipmentNotificationPost> complementarInfoAdvancedShipmentNotificationPost(
-			List<AdvancedShipmentNotificationPost> advancedShipmentNotificationPostList) {
-
-		advancedShipmentNotificationPostList.forEach(advancedShipmentNotificationPost -> {
-			try {
-				OrdemPedidoNimbiResponse pedidoResponse = consultarPedidoPorCodeERP(
-						advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrder().getERPCode());
-
-				advancedShipmentNotificationPost.getIncoterm()
-						.setCode(pedidoResponse.getPurchaseOrderGroupGetAPI().getPurchaseOrder().getIncotermCode());
-				advancedShipmentNotificationPost.getIncoterm().setDescription(
-						pedidoResponse.getPurchaseOrderGroupGetAPI().getPurchaseOrder().getIncotermDescription());
-				advancedShipmentNotificationPost.getCompany().setCountryCode(
-						pedidoResponse.getPurchaseOrderGroupGetAPI().getPurchaseOrder().getBuyerCountryCode());
-				advancedShipmentNotificationPost.getCompany().setFiscalIdentifier(
-						pedidoResponse.getPurchaseOrderGroupGetAPI().getPurchaseOrder().getBuyerTaxNumber());
-				advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrder().setPurchaseOrderNumber(
-						pedidoResponse.getPurchaseOrderGroupGetAPI().getPurchaseOrder().getId().toString());
-
-				List<OrderItems> orderItems = pedidoResponse.getPurchaseOrderGroupGetAPI().getOrderItems().stream()
-						.filter(item -> advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrder()
-								.getPurchaseOrderItem().getPurchaseOrderItemNumber().equals(item.getLineERP()))
-						.collect(Collectors.toList());
-
-				advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrder().getPurchaseOrderItem()
-						.setSupplierItemNumber(orderItems.get(0).getCode());
-
-				advancedShipmentNotificationPost.getASNItems().get(0).getUnitOfMeasurement()
-						.setCode(orderItems.get(0).getUnitOfMeasureCode());
-				advancedShipmentNotificationPost.getASNItems().get(0).getUnitOfMeasurement()
-						.setDescription(orderItems.get(0).getUnitOfMeasureDescription());
-
-			} catch (ParseException | RestErrorException e) {
-				log.error(e.getMessage());
-				e.printStackTrace();
-			}
-
-		});
-
-		return advancedShipmentNotificationPostList;
-	}
-
 	private List<MapeamentoDados> consultarXMLCaminhoZip(NotaFiscalEletronicaNimbiResponse notaFiscalEletronica)
 			throws ParseException, RestErrorException {
 
 		List<MapeamentoDados> mapeamentoDadosList = new ArrayList<MapeamentoDados>();
-		String nota = parametroService.getParametroByChave(PARAMETRO_TIPO_NOTA);
-		String modelo = parametroService.getParametroByChave(PARAMETRO_MODELO_NOTA);
+		String nota = parametroService.getParametroByChave(ParametroService.PARAMETRO_TIPO_NOTA);
+		String modelo = parametroService.getParametroByChave(ParametroService.PARAMETRO_MODELO_NOTA);
 
 		notaFiscalEletronica.getNfeResponse().forEach(notaFiscal -> {
 
@@ -141,7 +95,7 @@ public class NimbiService {
 	}
 
 	@SuppressWarnings("unchecked")
-	private OrdemPedidoNimbiResponse consultarPedidoPorCodeERP(String erpCode)
+	public OrdemPedidoNimbiResponse consultarPedidoPorCodeERP(String erpCode)
 			throws ParseException, RestErrorException {
 		UriComponents uri = restNimbiConfig.getUriERPCode(erpCode);
 

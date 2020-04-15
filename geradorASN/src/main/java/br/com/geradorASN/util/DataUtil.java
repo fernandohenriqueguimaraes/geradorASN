@@ -1,23 +1,31 @@
 package br.com.geradorASN.util;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class DataUtil {
 	
 	private static String FORMATO_DATA_ENTRADA = "dd/MM/yyyy";
 	private static String FORMATO_ISSUING_DATE = "dd/MM/yyyy HH:mm:ss";
-	private static String FORMATO_REGISTER_CREATION_HOUR = "HH:mm:ss";
 
 	public static String getDataHoje() {
-		return (new SimpleDateFormat(FORMATO_DATA_ENTRADA)).format(new Date());
+		return LocalDateTime.now().format(DateTimeFormatter.ofPattern(FORMATO_DATA_ENTRADA));
+	}
+	
+	public static String formatarData(LocalDate localDate) {
+		return localDate.format(DateTimeFormatter.ofPattern(FORMATO_DATA_ENTRADA));
 	}
 	
 	public static String getRegisterCreationHour() {
-		return (new SimpleDateFormat(FORMATO_REGISTER_CREATION_HOUR)).format(new Date());
+		return LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_TIME);
 	}
 	
 	public static String getIssuingDateFormat(String issuingDate) {
-		return (new SimpleDateFormat(FORMATO_ISSUING_DATE)).format(new Date());
+		return LocalDateTime.parse(issuingDate, DateTimeFormatter.ISO_OFFSET_DATE_TIME).format(DateTimeFormatter.ofPattern(FORMATO_ISSUING_DATE));	
+	}
+	
+	public static LocalDate calcularProximosXdias(String dias) {
+		return LocalDate.now().plusDays(Long.parseLong(dias));
 	}
 }

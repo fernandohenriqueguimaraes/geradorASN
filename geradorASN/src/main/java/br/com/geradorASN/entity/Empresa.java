@@ -47,7 +47,7 @@ public class Empresa implements Serializable {
 	@Column(name = "uf", length = 3)
 	private String uf;
 	
-	@Column(name = "ibgeCode", length = 10)
+	@Column(name = "ibge", length = 10)
 	private String ibgeCode;
 
 	@Column(name = "pais", length = 20)
