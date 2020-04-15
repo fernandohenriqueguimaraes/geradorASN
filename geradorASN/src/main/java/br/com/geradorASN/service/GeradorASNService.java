@@ -49,8 +49,9 @@ public class GeradorASNService {
 	public List<AdvancedShipmentNotificationPost> gerarASN() throws RestErrorException, ParseException, IOException,
 			ClassNotFoundException, EmpresaNotFoundException, ProdutoNotFoundException {
 
-		List<AdvancedShipmentNotificationPost> advancedShipmentNotificationPostList = gerarRelatorio(
-				zipService.consultarArquivosZip(nimbiService.consultarXMLCaminhoZip()));
+		List<AdvancedShipmentNotificationPost> advancedShipmentNotificationPostList = nimbiService.complementarInfoAdvancedShipmentNotificationPost(gerarRelatorio(
+				zipService.consultarArquivosZip(nimbiService.consultarXMLCaminhoZip())));
+
 		parametroService.updateParametroDataCorte();
 
 		return advancedShipmentNotificationPostList;
@@ -80,31 +81,19 @@ public class GeradorASNService {
 			Empresa empresa = empresas.get(0);
 			Produto produto = produtos.get(0);
 			
-			if (!empresa.isGeraASN() && produto.getTipoProduto().equals(TipoProdutoEnum.MEMS.getDescricao())) {
+			if (empresa.isGeraASN() && !produto.getTipoProduto().equals(TipoProdutoEnum.MEMS.getDescricao())) {
 				
-				relatorioService.salvarRelatorio(new Relatorio()
-						.setReference(mapeamento.getNfeNimbi().getReference())
-						.setStatus(RelatorioStatusEnum.PRODUTO_MEMS_CNPJ_NAO_CADASTRA.getDescricao())
-						.setMotivo("Empresa: " + cnpj + " - " + empresa.getRazaoSocial() + " e Produto: " + produto.getPartNumber() + " - " + produto.getModelo()));
-			
-			} else if (empresa.isGeraASN() && produto.getTipoProduto().equals(TipoProdutoEnum.MEMS.getDescricao())) {
-				relatorioService.salvarRelatorio(new Relatorio()
-						.setReference(mapeamento.getNfeNimbi().getReference())
-						.setStatus(RelatorioStatusEnum.PRODUTO_MEMS.getDescricao())
-						.setMotivo("Produto: " + produto.getPartNumber() + " - " + produto.getModelo()));
-
-			} else if (!empresa.isGeraASN() && !produto.getTipoProduto().equals(TipoProdutoEnum.MEMS.getDescricao())) {
-				relatorioService.salvarRelatorio(new Relatorio()
-						.setReference(mapeamento.getNfeNimbi().getReference())
-						.setStatus(RelatorioStatusEnum.CNPJ_NAO_CADASTRA.getDescricao())
-						.setMotivo("Empresa: " + cnpj + " - " + empresa.getRazaoSocial()));
-			} else {
 				relatorioService.salvarRelatorio(new Relatorio()
 						.setReference(mapeamento.getNfeNimbi().getReference())
 						.setStatus(RelatorioStatusEnum.ASN_GERADO.getDescricao()));	
 				listaNFeASN.add(mapeamento.getAdvancedShipmentNotificationPost());
-			}
 			
+			} else  {
+				relatorioService.salvarRelatorio(new Relatorio()
+						.setReference(mapeamento.getNfeNimbi().getReference())
+						.setStatus(RelatorioStatusEnum.NAO_SE_APLICA.getDescricao()));
+
+			} 
 			
 		});
 		

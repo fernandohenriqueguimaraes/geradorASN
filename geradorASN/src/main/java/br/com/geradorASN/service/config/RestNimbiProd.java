@@ -21,6 +21,7 @@ public class RestNimbiProd extends RestNimbiConfig {
 	private static final String PORT = "443";
 
 	private static final String GET_PATH = "API/rest/NFe/ResponseProcess/v1";
+	private static final String GET_PATH_DETALHAMENTO_PEDIDO = "API/rest/PurchaseOrder/v4";
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -46,6 +47,12 @@ public class RestNimbiProd extends RestNimbiConfig {
 	@Override
 	public HttpHeaders getHeaders() {
 		return CredenciaisProd.getHeaders();
+	}
+
+	@Override
+	public UriComponents getUriERPCode(String erpCode) throws ParseException {
+		String path = GET_PATH_DETALHAMENTO_PEDIDO + "?CodeERP=" + erpCode;
+		return getUriComponents(path);
 	}
 
 }
