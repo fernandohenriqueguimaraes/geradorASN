@@ -21,6 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,8 +43,8 @@ public class ZipService {
 
 	private static final Logger log = LoggerFactory.getLogger(ZipService.class);
 
-	private static String ZIP_DESTINATION_FOLDER     = "src/main/resources/zip/";
-	private static String XML_DESTINATION_FOLDER     = "src/main/resources/xml/";
+	private static String ZIP_DESTINATION_FOLDER;
+	private static String XML_DESTINATION_FOLDER;
 
 	private static String CODIGO_XML_TAG_RAIZ  		       			      = "nfeProc";
 	private static String CODIGO_XML_CODIGO_PRODUTO        				  = "cProd";
@@ -69,9 +70,12 @@ public class ZipService {
 	private static String CODIGO_XML_PESO_BRUTO_TOTAL				      = "pesoB";
 	private static String CODIGO_XML_CODIGO_ISO_PAIS				      = "xPais";
 	private static String CODIGO_XML_CODIGO_INTERNO_FORNECEDOR 			  = "nItemPed";
-
-	@Autowired
-	ResourceLoader resourceLoader;
+	
+	public ZipService(@Value("${br.com.geradorASN.service.ZipService.zipDestinationFolder}") String zipDestinationFolder,
+			@Value("${br.com.geradorASN.service.ZipService.xmlDestinationFolder}") String xmlDestinationFolder) {
+		ZIP_DESTINATION_FOLDER = zipDestinationFolder;
+		XML_DESTINATION_FOLDER = xmlDestinationFolder;
+	}
 
 	public List<MapeamentoDados> consultarArquivosZip(List<MapeamentoDados> mapeamentoDadosList)
 			throws IOException, ZipException {

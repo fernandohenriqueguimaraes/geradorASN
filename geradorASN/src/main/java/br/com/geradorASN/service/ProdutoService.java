@@ -10,6 +10,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,17 +29,22 @@ public class ProdutoService implements GeradorTabelasService<Produto> {
 	
 	private static final Logger log = LoggerFactory.getLogger(ProdutoService.class);
 	
-	private static String PRODUTO_SOURCE_PATH = "src/main/resources/produtos.csv";
+	private static String PRODUTO_SOURCE_PATH;
 	
 	@Autowired
 	private ProdutoDao produtoRepository;
 	
+	public ProdutoService(@Value("${br.com.geradorASN.service.ProdutoService.DiretorioCSVProduto}") String diretorioCSVProduto) {
+		PRODUTO_SOURCE_PATH = diretorioCSVProduto;
+	}
+
 	public List<Produto> carregarDados() throws IOException {
 		
 		List<Produto> produtos = new ArrayList<Produto>();
 
 		@SuppressWarnings("deprecation")
-		CSVReader reader = new CSVReader(new FileReader(PRODUTO_SOURCE_PATH), ';' , '"' , 1);
+		CSVReader reader = new CSVReader(new FileReader(PRODUTO_SOURCE_PATH),
+				ScriptUtils.DEFAULT_STATEMENT_SEPARATOR.charAt(0) , '"' , 1);
 		List<String[]> produtoStringList = reader.readAll();
 		
 		for (String[] produto : produtoStringList) {

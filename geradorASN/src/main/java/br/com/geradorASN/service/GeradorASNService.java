@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,16 +33,16 @@ public class GeradorASNService {
 
 	private static final Logger log = LoggerFactory.getLogger(GeradorASNService.class);
 
-	private static String OBSERVATION_TEXT_DEFAULT_VALUE = "ASN - Processo Automatico Michelin";
-	private static String ASN_INITIAL_STATUS = "ZA";
-	private static String PREFIXO_CODIGO_ASN = "NA";
-	private static String QUANTIDADE_DIGITOS_ASN = "8";
-	private static String CODIGO_SPECIAL_PROCESS_CODE = "BR01";
-	private static String CODIGO_SUPPLIER_COUNTRY_CODE = "BR";
-	private static String DEFAULT_FRAGILE_LOAD_STATUS = "Não";
-	private static String DEFAULT_TRANSPORTATION_MODE_CODE = "01";
-	private static String DEFAULT_TRANSPORTATION_TYPE = "A";
-	private static String DEFAULT_USERNAME = "jullyane.sabino@michelin.com";
+	private static String OBSERVATION_TEXT_DEFAULT_VALUE;
+	private static String ASN_INITIAL_STATUS;
+	private static String PREFIXO_CODIGO_ASN;
+	private static String QUANTIDADE_DIGITOS_ASN;
+	private static String CODIGO_SPECIAL_PROCESS_CODE;
+	private static String CODIGO_SUPPLIER_COUNTRY_CODE;
+	private static String DEFAULT_FRAGILE_LOAD_STATUS;
+	private static String DEFAULT_TRANSPORTATION_MODE_CODE;
+	private static String DEFAULT_TRANSPORTATION_TYPE;
+	private static String DEFAULT_USERNAME;
 
 	private Integer sequencial;
 
@@ -62,6 +63,31 @@ public class GeradorASNService {
 
 	@Autowired
 	private ZipService zipService;
+
+	public GeradorASNService(
+			@Value("${br.com.geradorASN.service.GeradorASNService.ObservationTextValue}") String observationTextValue,
+			@Value("${br.com.geradorASN.service.GeradorASNService.ASNInitialStatus}") String asnInitialStatus,
+			@Value("${br.com.geradorASN.service.GeradorASNService.PrefixoCodigoASN}") String prefixoCodigoASN,
+			@Value("${br.com.geradorASN.service.GeradorASNService.QuantidadeDigitosASN}") String quantidadeDigitosASN,
+			@Value("${br.com.geradorASN.service.GeradorASNService.CodigoEspecialProcessCode}") String codigoEspecialProcessCode,
+			@Value("${br.com.geradorASN.service.GeradorASNService.CodigoSupplierCountryCode}") String codigoSupplierCountryCode,
+			@Value("${br.com.geradorASN.service.GeradorASNService.DefaultFragileLoadStatus}") String defaultFragileLoadStatus,
+			@Value("${br.com.geradorASN.service.GeradorASNService.DefaultTransportationModeCode}") String defaultTransportationModeCode,
+			@Value("${br.com.geradorASN.service.GeradorASNService.DefaultTransportationType}") String defaultTransportationType,
+			@Value("${br.com.geradorASN.service.GeradorASNService.DefaultUsername}") String defaultUsername) {
+
+		OBSERVATION_TEXT_DEFAULT_VALUE = observationTextValue;
+		ASN_INITIAL_STATUS = asnInitialStatus;
+		PREFIXO_CODIGO_ASN = prefixoCodigoASN;
+		QUANTIDADE_DIGITOS_ASN = quantidadeDigitosASN;
+		CODIGO_SPECIAL_PROCESS_CODE = codigoEspecialProcessCode;
+		CODIGO_SUPPLIER_COUNTRY_CODE = codigoSupplierCountryCode;
+		DEFAULT_FRAGILE_LOAD_STATUS = defaultFragileLoadStatus;
+		DEFAULT_TRANSPORTATION_MODE_CODE = defaultTransportationModeCode;
+		DEFAULT_TRANSPORTATION_TYPE = defaultTransportationType;
+		DEFAULT_USERNAME = defaultUsername;
+
+	}
 
 	public List<AdvancedShipmentNotificationPost> gerarASN() throws RestErrorException, ParseException, IOException,
 			ClassNotFoundException, EmpresaNotFoundException, ProdutoNotFoundException {
@@ -165,7 +191,7 @@ public class GeradorASNService {
 				advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrder().getPurchaseOrderItem()
 						.setIsServiceType(true);
 			}
-			
+
 			advancedShipmentNotificationPost.setObservationTEXT(OBSERVATION_TEXT_DEFAULT_VALUE);
 			advancedShipmentNotificationPost.setAsnStatus(ASN_INITIAL_STATUS);
 			advancedShipmentNotificationPost.setSpecialProcessCode(CODIGO_SPECIAL_PROCESS_CODE);
