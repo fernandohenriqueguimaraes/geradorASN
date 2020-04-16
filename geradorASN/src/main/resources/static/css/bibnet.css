@@ -1,0 +1,121 @@
+@charset "UTF-8";
+
+.container {
+	max-width: 1400px;
+}
+
+legend {
+	font-size: 1.2rem;
+	font-weight: bold;
+}
+p{
+	margin-bottom: 0;
+}
+.border {
+	border: 3px solid #ccc !important;
+	border-radius: 5px;
+	margin-bottom: 20px;
+}
+.accordion{
+	margin-top:20px;
+	font-size: 10px;
+}
+.link-pedido{
+	font-size: 12px;
+}
+.header-pedido{
+	font-size: 10px;
+} 
+.btn-menu{
+	padding: 14px;
+	margin-right: 12px;
+	font-size: 0.8rem;
+}
+.btn-lg{
+	padding: 1rem 1rem;
+	margin-right: 15px;
+	margin-bottom: 15px;
+}
+/* .btn-secondary:hover{
+	background-color: #2b539c;
+	border-color: #2b539c;
+} */
+
+.table{
+	font-size: 12px; 
+}
+.botoes {
+	margin-bottom: 10px;
+}
+.logo{
+	width: 150px;
+	height: 80px;
+}
+.navbar {
+	margin-bottom: 20px;
+}
+
+.status {
+	padding: 0px 20px 0px 20px;
+	font-size: unset;
+	font-weight: bolder;
+	color: #FFF;
+	border-radius: 2px;
+	width: 110px;
+	text-align: center;
+}
+
+.ok{
+	background-color: #28a745;
+	border-color: #28a745;
+}
+
+.pendente{
+	background-color: #ffc107;
+	border-color: #ffc107;
+}
+
+.nok{
+	background-color: #dc3545;
+	border-color: #dc3545;
+}
+
+.returned{
+	font-size: 10px;
+	font-weight: bold; 
+}
+
+.pedidoPendente{
+	font-size: 18px;
+	font-weight: bold; 
+	color: #b1952c69; 
+}
+
+.pedidoAceito{
+	font-size: 18px;
+	font-weight: bold; 
+	color: #28a745bd;
+}
+
+.pedidoRejeitado{
+	font-size: 18px;
+	font-weight: bold; 
+	color: #dc3545ba;
+}
+
+input::-webkit-input-placeholder {
+	font-size: 15px;
+	font-style: italic;
+}
+
+.btn-pesquisar {
+	font-size: 0.8rem;
+	padding: 8px 20px;
+}
+
+a {
+	font-weight: bold;
+	color: #6c757d;
+}
+
+

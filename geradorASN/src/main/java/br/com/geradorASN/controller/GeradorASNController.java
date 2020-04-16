@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import br.com.geradorASN.entity.Empresa;
-import br.com.geradorASN.entity.MapeamentoDados;
 import br.com.geradorASN.entity.Produto;
+import br.com.geradorASN.entity.Relatorio;
 import br.com.geradorASN.entity.rest.v1.post.request.AdvancedShipmentNotificationPost;
 import br.com.geradorASN.exception.EmpresaNotFoundException;
 import br.com.geradorASN.exception.ProdutoNotFoundException;
@@ -23,6 +24,7 @@ import br.com.geradorASN.exception.RestErrorException;
 import br.com.geradorASN.service.EmpresaService;
 import br.com.geradorASN.service.GeradorASNService;
 import br.com.geradorASN.service.ProdutoService;
+import br.com.geradorASN.service.RelatorioService;
 
 /**
  * Classe controladora da geração de ASN
@@ -40,9 +42,20 @@ public class GeradorASNController {
 
 	@Autowired
 	private EmpresaService empresaService;
+	
+	@Autowired
+	private RelatorioService relatorioService;
 
 	@Autowired
 	private GeradorASNService geradorASNService;
+	
+	@RequestMapping()
+	public ModelAndView init() {
+		ModelAndView mv = new ModelAndView("resultado");
+		List<Relatorio>	resultados = relatorioService.listarResultados();
+		mv.addObject("resultados", resultados);
+		return mv;
+	}
 
 	@RequestMapping(value = "/produtos", method = RequestMethod.GET)
 	@ResponseBody
@@ -94,4 +107,5 @@ public class GeradorASNController {
 		return advancedShipmentNotificationPostList;
 
 	}
+	
 }

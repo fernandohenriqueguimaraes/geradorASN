@@ -34,5 +34,9 @@ public class RelatorioService {
 	public List<Relatorio> getRelatorioByReference(String reference) {
 		return relatorioRepository.getRelatorioByReference(reference);
 	}
+	
+	public List<Relatorio> listarResultados() {
+		return (List<Relatorio>) relatorioRepository.findAll();
+	}
 
 }
