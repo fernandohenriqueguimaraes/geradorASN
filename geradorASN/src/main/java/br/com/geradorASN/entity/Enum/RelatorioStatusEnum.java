@@ -3,7 +3,9 @@ package br.com.geradorASN.entity.Enum;
 public enum RelatorioStatusEnum {
 	
 	ASN_GERADO("ASN GERADO"),
-	NAO_SE_APLICA("NÃO SE APLICA");
+	PRODUTO_MEMS_E_CNPJ_NAO_GERA_ASN("PRODUTO MEMS E CNPJ NÃO GERA ASN"), 
+	PRODUTO_MEMS("PRODUTO MEMS"),
+	CNPJ_NAO_GERA_ASN("CNPJ NÃO GERA ASN");
 	
 	private String descricao;
 	

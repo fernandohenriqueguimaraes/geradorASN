@@ -29,6 +29,7 @@
 						<th scope="col">Reference</th>
 						<th scope="col" class="text-center">ASN Number</th>
 						<th scope="col" class="text-center">Status</th>
+						<th scope="col" class="text-center">Motivo</th>
 						<th scope="col" class="text-center">Data</th>
 					</tr>
 				</thead>
@@ -37,6 +38,7 @@
 						<th scope="row" th:text="${resultado.reference}"></th>
 						<td th:text="${resultado.numeroASN}" class="text-center"></td>
 						<td th:text="${resultado.status}" class="text-center"></td>
+						<td th:text="${resultado.motivo}" class="text-center"></td>
 						<td th:text="${resultado.dataProcessamento}" class="text-center"></td>
 					</tr>
 				</tbody>

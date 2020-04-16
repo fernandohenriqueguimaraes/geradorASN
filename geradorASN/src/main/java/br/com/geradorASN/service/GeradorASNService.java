@@ -124,6 +124,7 @@ public class GeradorASNService {
 
 			Empresa empresa = empresas.get(0);
 			Produto produto = produtos.get(0);
+			Relatorio relatorio = new Relatorio().setReference(mapeamento.getNfeNimbi().getReference());
 
 			if (empresa.isGeraASN() && !produto.getTipoProduto().equals(TipoProdutoEnum.MEMS.getDescricao())) {
 
@@ -132,16 +133,24 @@ public class GeradorASNService {
 				mapeamento.setAdvancedShipmentNotificationPost(complementarInfoAdvancedShipmentNotificationPost(
 						mapeamento.getAdvancedShipmentNotificationPost(), empresa, produto));
 
-				relatorioService.salvarRelatorio(new Relatorio().setReference(mapeamento.getNfeNimbi().getReference())
-						.setStatus(RelatorioStatusEnum.ASN_GERADO.getDescricao())
+				relatorioService.salvarRelatorio(relatorio.setStatus(RelatorioStatusEnum.ASN_GERADO.getDescricao())
 						.setNumeroASN(mapeamento.getAdvancedShipmentNotificationPost().getAsnNumber()));
 
 				listaNFeASN.add(mapeamento.getAdvancedShipmentNotificationPost());
 
-			} else {
-				relatorioService.salvarRelatorio(new Relatorio().setReference(mapeamento.getNfeNimbi().getReference())
-						.setStatus(RelatorioStatusEnum.NAO_SE_APLICA.getDescricao()));
+			} else if (empresa.isGeraASN() && produto.getTipoProduto().equals(TipoProdutoEnum.MEMS.getDescricao())) {
+				relatorioService.salvarRelatorio(relatorio.setStatus(RelatorioStatusEnum.PRODUTO_MEMS.getDescricao())
+						.setMotivo("Produto: " + produto.getPartNumber() + " - " + produto.getModelo()));
 
+			} else if (!empresa.isGeraASN() && !produto.getTipoProduto().equals(TipoProdutoEnum.MEMS.getDescricao())) {
+				relatorioService
+						.salvarRelatorio(relatorio.setStatus(RelatorioStatusEnum.CNPJ_NAO_GERA_ASN.getDescricao())
+								.setMotivo("Empresa: " + cnpj + " - " + empresa.getRazaoSocial()));
+			} else {
+				relatorioService.salvarRelatorio(
+						relatorio.setStatus(RelatorioStatusEnum.PRODUTO_MEMS_E_CNPJ_NAO_GERA_ASN.getDescricao())
+								.setMotivo("Produto: " + produto.getPartNumber() + " - " + produto.getModelo()
+										+ " & Empresa: " + cnpj + " - " + empresa.getRazaoSocial()));
 			}
 
 		});

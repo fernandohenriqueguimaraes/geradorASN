@@ -32,6 +32,9 @@ public class Relatorio implements Serializable {
 	@Column(name = "status", length = 45, nullable = false)
 	private String status;
 	
+	@Column(name = "motivo", length = 45)
+	private String motivo;
+	
 	@Column(name = "data")
 	@CreationTimestamp
 	private LocalDate dataProcessamento;
@@ -76,11 +79,19 @@ public class Relatorio implements Serializable {
 		return this;
 	}
 
+	public String getMotivo() {
+		return motivo;
+	}
+
+	public Relatorio setMotivo(String motivo) {
+		this.motivo = motivo;
+		return this;
+	}
+
 	@Override
 	public String toString() {
 		return "Relatorio [id=" + id + ", reference=" + reference + ", numeroASN=" + numeroASN + ", status=" + status
-				+ ", dataProcessamento=" + dataProcessamento + "]";
+				+ ", motivo=" + motivo + ", dataProcessamento=" + dataProcessamento + "]";
 	}
-
 	
 }
