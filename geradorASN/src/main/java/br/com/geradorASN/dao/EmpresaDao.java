@@ -13,5 +13,7 @@ public interface EmpresaDao extends CrudRepository<Empresa, String> {
 
 	@Query("SELECT e FROM Empresa e WHERE e.cnpj = ?1")
 	List<Empresa> getEmpresaByCnpj(String cnpj);
+	
+
 
 }

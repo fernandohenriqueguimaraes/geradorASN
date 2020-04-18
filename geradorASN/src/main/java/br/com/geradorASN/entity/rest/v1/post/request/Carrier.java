@@ -1,5 +1,7 @@
 package br.com.geradorASN.entity.rest.v1.post.request;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class Carrier {
 
 	private String Name;
@@ -8,6 +10,8 @@ public class Carrier {
 
 	public Carrier() {
 		setAddress(new Address());
+		setName(StringUtils.EMPTY);
+		setFiscalIdentifier(StringUtils.EMPTY);
 	}
 
 	public String getName() {

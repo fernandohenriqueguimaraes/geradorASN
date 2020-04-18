@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +40,17 @@ public class GeradorASNService {
 	private static String QUANTIDADE_DIGITOS_ASN;
 	private static String CODIGO_SPECIAL_PROCESS_CODE;
 	private static String CODIGO_SUPPLIER_COUNTRY_CODE;
-	private static String DEFAULT_FRAGILE_LOAD_STATUS;
 	private static String DEFAULT_TRANSPORTATION_MODE_CODE;
 	private static String DEFAULT_TRANSPORTATION_TYPE;
 	private static String DEFAULT_USERNAME;
-
+	private static String DEFAULT_PACKAGE_TYPE;
+	private static String DEFAULT_CONTAINER_TYPE;
+	private static String DEFAULT_VEHYCLE_TYPE;
+	
+	private List<String> CNPJMichelinPlant = new ArrayList<String>();
+	private List<String> ShipCityTaxCode = new ArrayList<String>();
+	private List<String> BoardingInstructionsText = new ArrayList<String>();
+	
 	private Integer sequencial;
 
 	@Autowired
@@ -71,10 +78,15 @@ public class GeradorASNService {
 			@Value("${br.com.geradorASN.service.GeradorASNService.QuantidadeDigitosASN}") String quantidadeDigitosASN,
 			@Value("${br.com.geradorASN.service.GeradorASNService.CodigoEspecialProcessCode}") String codigoEspecialProcessCode,
 			@Value("${br.com.geradorASN.service.GeradorASNService.CodigoSupplierCountryCode}") String codigoSupplierCountryCode,
-			@Value("${br.com.geradorASN.service.GeradorASNService.DefaultFragileLoadStatus}") String defaultFragileLoadStatus,
 			@Value("${br.com.geradorASN.service.GeradorASNService.DefaultTransportationModeCode}") String defaultTransportationModeCode,
 			@Value("${br.com.geradorASN.service.GeradorASNService.DefaultTransportationType}") String defaultTransportationType,
-			@Value("${br.com.geradorASN.service.GeradorASNService.DefaultUsername}") String defaultUsername) {
+			@Value("${br.com.geradorASN.service.GeradorASNService.DefaultUsername}") String defaultUsername,
+			@Value("${br.com.geradorASN.service.GeradorASNService.DefaultPackageType}") String defaultPackageType,
+			@Value("${br.com.geradorASN.service.GeradorASNService.DefaultContainerType}") String defaultContainerType,
+			@Value("${br.com.geradorASN.service.GeradorASNService.VehycleType}") String defaultVehycleType,
+			@Value("#{'${br.com.geradorASN.service.GeradorASNService.CNPJMichelinPlant}'.split(',')}") List<String> CNPJMichelinPlant,
+			@Value("#{'${br.com.geradorASN.service.GeradorASNService.ShipCityTaxCode}'.split(',')}") List<String> ShipCityTaxCode,
+			@Value("#{'${br.com.geradorASN.service.GeradorASNService.BoardingInstructionsText}'.split(',')}") List<String> BoardingInstructionsText) {
 
 		OBSERVATION_TEXT_DEFAULT_VALUE = observationTextValue;
 		ASN_INITIAL_STATUS = asnInitialStatus;
@@ -82,11 +94,18 @@ public class GeradorASNService {
 		QUANTIDADE_DIGITOS_ASN = quantidadeDigitosASN;
 		CODIGO_SPECIAL_PROCESS_CODE = codigoEspecialProcessCode;
 		CODIGO_SUPPLIER_COUNTRY_CODE = codigoSupplierCountryCode;
-		DEFAULT_FRAGILE_LOAD_STATUS = defaultFragileLoadStatus;
 		DEFAULT_TRANSPORTATION_MODE_CODE = defaultTransportationModeCode;
 		DEFAULT_TRANSPORTATION_TYPE = defaultTransportationType;
 		DEFAULT_USERNAME = defaultUsername;
-
+		DEFAULT_PACKAGE_TYPE = defaultPackageType;
+		DEFAULT_CONTAINER_TYPE = defaultContainerType;
+		DEFAULT_VEHYCLE_TYPE = defaultVehycleType;
+		this.CNPJMichelinPlant = CNPJMichelinPlant;
+		this.ShipCityTaxCode = ShipCityTaxCode;
+		this.BoardingInstructionsText = BoardingInstructionsText;
+		
+		
+		
 	}
 
 	public List<AdvancedShipmentNotificationPost> gerarASN() throws RestErrorException, ParseException, IOException,
@@ -119,7 +138,7 @@ public class GeradorASNService {
 			List<Produto> produtos = produtoService.getProdutoByCad(mapeamento.getCodigoProduto());
 
 			if (produtos.isEmpty()) {
-				throw new ProdutoNotFoundException("CAD Michelan não encontrado na tabela Produto.");
+				throw new ProdutoNotFoundException("CAD Michelin não encontrado na tabela Produto.");
 			}
 
 			Empresa empresa = empresas.get(0);
@@ -128,7 +147,7 @@ public class GeradorASNService {
 
 			if (empresa.isGeraASN() && !produto.getTipoProduto().equals(TipoProdutoEnum.MEMS.getDescricao())) {
 
-				mapeamento.getAdvancedShipmentNotificationPost().setNfeNumber(mapeamento.getNfeNimbi().getReference());
+				mapeamento.getAdvancedShipmentNotificationPost().setNfeNumber(mapeamento.getNfeNimbi().getAccessKey());
 				mapeamento.getAdvancedShipmentNotificationPost().setAsnNumber(gerarSequencialASNNumber());
 				mapeamento.setAdvancedShipmentNotificationPost(complementarInfoAdvancedShipmentNotificationPost(
 						mapeamento.getAdvancedShipmentNotificationPost(), empresa, produto));
@@ -143,8 +162,7 @@ public class GeradorASNService {
 						.setMotivo("Produto: " + produto.getPartNumber() + " - " + produto.getModelo()));
 
 			} else if (!empresa.isGeraASN() && !produto.getTipoProduto().equals(TipoProdutoEnum.MEMS.getDescricao())) {
-				relatorioService
-						.salvarRelatorio(relatorio.setStatus(RelatorioStatusEnum.CNPJ_NAO_GERA_ASN.getDescricao())
+				relatorioService.salvarRelatorio(relatorio.setStatus(RelatorioStatusEnum.CNPJ_NAO_GERA_ASN.getDescricao())
 								.setMotivo("Empresa: " + cnpj + " - " + empresa.getRazaoSocial()));
 			} else {
 				relatorioService.salvarRelatorio(
@@ -196,26 +214,32 @@ public class GeradorASNService {
 						.setCode(orderItems.get(0).getUnitOfMeasureCode());
 				advancedShipmentNotificationPost.getASNItems().get(0).getUnitOfMeasurement()
 						.setDescription(orderItems.get(0).getUnitOfMeasureDescription());
-
-				advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrder().getPurchaseOrderItem()
-						.setIsServiceType(true);
+				advancedShipmentNotificationPost.getASNItems().get(0).setPackageType(DEFAULT_PACKAGE_TYPE);
+				
 			}
 
 			advancedShipmentNotificationPost.setObservationTEXT(OBSERVATION_TEXT_DEFAULT_VALUE);
 			advancedShipmentNotificationPost.setAsnStatus(ASN_INITIAL_STATUS);
 			advancedShipmentNotificationPost.setSpecialProcessCode(CODIGO_SPECIAL_PROCESS_CODE);
 			advancedShipmentNotificationPost.setSupplierCountryCode(CODIGO_SUPPLIER_COUNTRY_CODE);
-			advancedShipmentNotificationPost.setFragileLoadStatus(DEFAULT_FRAGILE_LOAD_STATUS);
+			advancedShipmentNotificationPost.setFragileLoadStatus(StringUtils.EMPTY);
 			advancedShipmentNotificationPost.setTransportationModeCode(DEFAULT_TRANSPORTATION_MODE_CODE);
 			advancedShipmentNotificationPost.setTransportationType(DEFAULT_TRANSPORTATION_TYPE);
 			advancedShipmentNotificationPost.setUsername(DEFAULT_USERNAME);
+			advancedShipmentNotificationPost.setContainerType(Integer.parseInt(DEFAULT_CONTAINER_TYPE));
+			advancedShipmentNotificationPost.setVehicleType(DEFAULT_VEHYCLE_TYPE);
 			advancedShipmentNotificationPost.setRegisterCreationHour(DataUtil.getRegisterCreationHour());
 
-			advancedShipmentNotificationPost.setHasShiptToInItem(true);
+			advancedShipmentNotificationPost.setHasShiptToInItem(false);
 
 			advancedShipmentNotificationPost.getReclaimOrigin().getAddress().setRegionCode(empresa.getUf());
+			advancedShipmentNotificationPost.getReclaimOrigin().setCountryCode(empresa.getCodigoPais());
+			
 			advancedShipmentNotificationPost.getShipTo().getAddress().setRegionCode(empresa.getUf());
+			advancedShipmentNotificationPost.getShipTo().setCountryCode(empresa.getCodigoPais());
 			advancedShipmentNotificationPost.setShipCityTaxCode(empresa.getIbgeCode());
+			advancedShipmentNotificationPost.getCompany().setName(empresa.getRazaoSocial());
+			
 			advancedShipmentNotificationPost.setVolumeCapacity(produto.getVolume());
 			advancedShipmentNotificationPost.setTotalHeightMeasure(produto.getAltura());
 			advancedShipmentNotificationPost.setTotalLenghtMeasure(produto.getComprimento());
@@ -223,7 +247,15 @@ public class GeradorASNService {
 			advancedShipmentNotificationPost.setReclaimEstimatedHour(
 					parametroService.getParametroByChave(ParametroService.PARAMETRO_RECLAIM_ESTIMATED_HOUR));
 			advancedShipmentNotificationPost.setReclaimEstimatedDate(calculoReclaimEstimatedDate());
-
+			
+			if (advancedShipmentNotificationPost.getReclaimOrigin().getFiscalIdentifier().equals(CNPJMichelinPlant.get(0))) {
+				advancedShipmentNotificationPost.setShipCityTaxCode(ShipCityTaxCode.get(0));
+				advancedShipmentNotificationPost.setBoardingInstructionsText(BoardingInstructionsText.get(0));
+			} else if (advancedShipmentNotificationPost.getReclaimOrigin().getFiscalIdentifier().equals(CNPJMichelinPlant.get(1))) {
+				advancedShipmentNotificationPost.setShipCityTaxCode(ShipCityTaxCode.get(1));
+				advancedShipmentNotificationPost.setBoardingInstructionsText(BoardingInstructionsText.get(1));
+			}
+			
 		} catch (ParseException | RestErrorException e) {
 			log.error(e.getMessage());
 			e.printStackTrace();

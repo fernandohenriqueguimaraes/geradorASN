@@ -12,7 +12,7 @@
 	<artifactId>geradorASN</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>geradorASN</name>
-	<description>Projeto de Geração de ASN do Michelan</description>
+	<description>Projeto de Geração de ASN do Michelin</description>
     
        <dependencies>
        <dependency>

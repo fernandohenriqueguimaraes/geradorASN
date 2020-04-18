@@ -1,19 +1,21 @@
 package br.com.geradorASN.entity.rest.v1.post.request;
 
-import java.math.BigDecimal;
+import org.apache.commons.lang3.StringUtils;
 
 public class ASNItem {
 
 	private PurchaseOrder purchaseOrder;
-	private BigDecimal Quantity;
+	private Integer Quantity;
 	private UnitOfMeasurement unitOfMeasurement;
-	private Integer PackageType;
+	private String PackageType;
 	private ShipToItem shipToItem;
 
 	public ASNItem() {
 		setPurchaseOrder(new PurchaseOrder());
 		setUnitOfMeasurement(new UnitOfMeasurement());
 		setShipToItem(new ShipToItem());
+		setQuantity(0);
+		setPackageType(StringUtils.EMPTY);
 	}
 
 	public PurchaseOrder getPurchaseOrder() {
@@ -24,11 +26,11 @@ public class ASNItem {
 		this.purchaseOrder = purchaseOrder;
 	}
 
-	public BigDecimal getQuantity() {
+	public Integer getQuantity() {
 		return Quantity;
 	}
 
-	public void setQuantity(BigDecimal quantity) {
+	public void setQuantity(Integer quantity) {
 		Quantity = quantity;
 	}
 
@@ -40,12 +42,12 @@ public class ASNItem {
 		this.unitOfMeasurement = unitOfMeasurement;
 	}
 
-	public Integer getPackageType() {
+	public String getPackageType() {
 		return PackageType;
 	}
 
-	public void setPackageType(Integer packageType) {
-		PackageType = packageType;
+	public void setPackageType(String empty) {
+		PackageType = empty;
 	}
 
 	public ShipToItem getShipToItem() {

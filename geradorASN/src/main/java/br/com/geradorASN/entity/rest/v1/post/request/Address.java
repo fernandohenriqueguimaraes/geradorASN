@@ -1,5 +1,7 @@
 package br.com.geradorASN.entity.rest.v1.post.request;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class Address {
 
 	private String StreetAddress;
@@ -10,9 +12,16 @@ public class Address {
 	private String PhoneNumber;
 	private String CityCode;
 	
-	public Address() {
+	public Address() {	
+		setStreetAddress(StringUtils.EMPTY);
+		setComplementNumber(StringUtils.EMPTY);
+		setPostalCode(StringUtils.EMPTY);
+		setCityName(StringUtils.EMPTY);
+		setRegionCode(StringUtils.EMPTY);
+		setPhoneNumber(StringUtils.EMPTY);
+		setCityCode(StringUtils.EMPTY);
 	}
-	
+
 	public String getStreetAddress() {
 		return StreetAddress;
 	}

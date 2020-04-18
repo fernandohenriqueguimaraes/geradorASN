@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class AdvancedShipmentNotificationPost {
 
 	private List<ASNItem> ASNItems;
@@ -16,9 +18,9 @@ public class AdvancedShipmentNotificationPost {
 	private Integer ContainerType;
 	private String DangerousFormNumber;
 	private String DivisibleLoadStatus;
-	private BigDecimal EstimatedCarriageValueAmount;
-	private BigDecimal ExtraServiceAmount;
-	private BigDecimal FederalPoliceAmount;
+	private Integer EstimatedCarriageValueAmount;
+	private Integer ExtraServiceAmount;
+	private Integer FederalPoliceAmount;
 	private String FragileLoadStatus;
 	private Boolean HasShiptToInItem;
 	private String ImportDocument;
@@ -28,7 +30,7 @@ public class AdvancedShipmentNotificationPost {
 	private BigDecimal InvoiceValueAmount;
 	private String InsuranceStatus;
 	private String IssuingDate;
-	private BigDecimal LicenseAmount;
+	private Integer LicenseAmount;
 	private String NfeNumber;
 	private String ObservationTEXT;
 	private String OnuNumber;
@@ -37,7 +39,7 @@ public class AdvancedShipmentNotificationPost {
 	private String ReclaimNumber;
 	private ReclaimOrigin reclaimOrigin;
 	private String RegisterCreationHour;
-	private BigDecimal RegisteredFederalPoliceQuantity;
+	private Integer RegisteredFederalPoliceQuantity;
 	private String RollingLoadStatus;
 	private String SelfSupportingLoadStatus;
 	private ShipTo shipTo;
@@ -53,7 +55,7 @@ public class AdvancedShipmentNotificationPost {
 	private String TransportationType;
 	private BigDecimal VolumeCapacity;
 	private String VehicleType;
-	private BigDecimal VolumeTotalQuantity;
+	private Integer VolumeTotalQuantity;
 	private String Username;
 	private String ShipCityTaxCode;
 
@@ -64,8 +66,52 @@ public class AdvancedShipmentNotificationPost {
 		setIncoterm(new Incoterm());
 		setReclaimOrigin(new ReclaimOrigin());
 		setShipTo(new ShipTo());
-	}
 
+		setAsnNumber(StringUtils.EMPTY);
+		setAsnStatus(StringUtils.EMPTY);
+		setBoardingInstructionsText(StringUtils.EMPTY);
+		setContainerType(0);
+		setDangerousFormNumber(StringUtils.EMPTY);
+		setDivisibleLoadStatus(StringUtils.EMPTY);
+		setEstimatedCarriageValueAmount(0);
+		setExtraServiceAmount(0);
+		setFederalPoliceAmount(0);
+		setFragileLoadStatus(StringUtils.EMPTY);
+		setHasShiptToInItem(false);
+		setImportDocument(StringUtils.EMPTY);
+		setImportDeclarationNumber(StringUtils.EMPTY);
+		setInvoiceQuantity(StringUtils.EMPTY);
+		setInvoiceValueAmount(new BigDecimal(0));
+		setInsuranceStatus(StringUtils.EMPTY);
+		setIssuingDate(StringUtils.EMPTY);
+		setLicenseAmount(0);
+		setNfeNumber(StringUtils.EMPTY);
+		setObservationTEXT(StringUtils.EMPTY);
+		setOnuNumber(StringUtils.EMPTY);
+		setReclaimEstimatedDate(StringUtils.EMPTY);
+		setReclaimEstimatedHour(StringUtils.EMPTY);
+		setReclaimNumber(StringUtils.EMPTY);
+		setRegisterCreationHour(StringUtils.EMPTY);
+		setRegisteredFederalPoliceQuantity(0);
+		setRollingLoadStatus(StringUtils.EMPTY);
+		setSelfSupportingLoadStatus(StringUtils.EMPTY);
+		setSpecialProcessCode(StringUtils.EMPTY);
+		setSupplierTaxNumber(StringUtils.EMPTY);
+		setSupplierCountryCode(StringUtils.EMPTY);
+		setTireStatus(StringUtils.EMPTY);
+		setTotalEstimatedWeight(new BigDecimal(0));;
+		setTotalWidthMeasure(new BigDecimal(0));
+		setTotalLenghtMeasure(new BigDecimal(0));
+		setTotalHeightMeasure(new BigDecimal(0));
+		setTransportationModeCode(StringUtils.EMPTY);
+		setTransportationType(StringUtils.EMPTY);
+		setVolumeCapacity(new BigDecimal(0));
+		setVehicleType(StringUtils.EMPTY);
+		setVolumeTotalQuantity(0);
+		setUsername(StringUtils.EMPTY);
+		setShipCityTaxCode(StringUtils.EMPTY);
+	}
+	
 	public List<ASNItem> getASNItems() {
 		return ASNItems;
 	}
@@ -138,28 +184,28 @@ public class AdvancedShipmentNotificationPost {
 		DivisibleLoadStatus = divisibleLoadStatus;
 	}
 
-	public BigDecimal getEstimatedCarriageValueAmount() {
+	public Integer getEstimatedCarriageValueAmount() {
 		return EstimatedCarriageValueAmount;
 	}
 
-	public void setEstimatedCarriageValueAmount(BigDecimal estimatedCarriageValueAmount) {
-		EstimatedCarriageValueAmount = estimatedCarriageValueAmount;
+	public void setEstimatedCarriageValueAmount(Integer i) {
+		EstimatedCarriageValueAmount = i;
 	}
 
-	public BigDecimal getExtraServiceAmount() {
+	public Integer getExtraServiceAmount() {
 		return ExtraServiceAmount;
 	}
 
-	public void setExtraServiceAmount(BigDecimal extraServiceAmount) {
-		ExtraServiceAmount = extraServiceAmount;
+	public void setExtraServiceAmount(Integer i) {
+		ExtraServiceAmount = i;
 	}
 
-	public BigDecimal getFederalPoliceAmount() {
+	public Integer getFederalPoliceAmount() {
 		return FederalPoliceAmount;
 	}
 
-	public void setFederalPoliceAmount(BigDecimal federalPoliceAmount) {
-		FederalPoliceAmount = federalPoliceAmount;
+	public void setFederalPoliceAmount(Integer i) {
+		FederalPoliceAmount = i;
 	}
 
 	public String getFragileLoadStatus() {
@@ -234,12 +280,12 @@ public class AdvancedShipmentNotificationPost {
 		IssuingDate = issuingDate;
 	}
 
-	public BigDecimal getLicenseAmount() {
+	public Integer getLicenseAmount() {
 		return LicenseAmount;
 	}
 
-	public void setLicenseAmount(BigDecimal licenseAmount) {
-		LicenseAmount = licenseAmount;
+	public void setLicenseAmount(Integer i) {
+		LicenseAmount = i;
 	}
 
 	public String getNfeNumber() {
@@ -306,12 +352,12 @@ public class AdvancedShipmentNotificationPost {
 		RegisterCreationHour = registerCreationHour;
 	}
 
-	public BigDecimal getRegisteredFederalPoliceQuantity() {
+	public Integer getRegisteredFederalPoliceQuantity() {
 		return RegisteredFederalPoliceQuantity;
 	}
 
-	public void setRegisteredFederalPoliceQuantity(BigDecimal registeredFederalPoliceQuantity) {
-		RegisteredFederalPoliceQuantity = registeredFederalPoliceQuantity;
+	public void setRegisteredFederalPoliceQuantity(Integer i) {
+		RegisteredFederalPoliceQuantity = i;
 	}
 
 	public String getRollingLoadStatus() {
@@ -434,12 +480,12 @@ public class AdvancedShipmentNotificationPost {
 		VehicleType = vehicleType;
 	}
 
-	public BigDecimal getVolumeTotalQuantity() {
+	public Integer getVolumeTotalQuantity() {
 		return VolumeTotalQuantity;
 	}
 
-	public void setVolumeTotalQuantity(BigDecimal volumeTotalQuantity) {
-		VolumeTotalQuantity = volumeTotalQuantity;
+	public void setVolumeTotalQuantity(Integer i) {
+		VolumeTotalQuantity = i;
 	}
 
 	public String getUsername() {

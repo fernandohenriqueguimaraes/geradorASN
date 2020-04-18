@@ -9,7 +9,6 @@ public class PurchaseOrderItem {
 	private String SupplierItemNumber;
 	private String PurchaseOrderItemNCM;
 	private BigDecimal PurchaseOrderItemQuantity;
-	private Boolean IsServiceType;
 
 	public PurchaseOrderItem() {
 	}
@@ -54,19 +53,11 @@ public class PurchaseOrderItem {
 		PurchaseOrderItemQuantity = purchaseOrderItemQuantity;
 	}
 
-	public Boolean getIsServiceType() {
-		return IsServiceType;
-	}
-
-	public void setIsServiceType(Boolean isServiceType) {
-		IsServiceType = isServiceType;
-	}
-
 	@Override
 	public String toString() {
 		return "PurchaseOrderItem [PurchaseOrderItemNumber=" + PurchaseOrderItemNumber + ", Description=" + Description
 				+ ", SupplierItemNumber=" + SupplierItemNumber + ", PurchaseOrderItemNCM=" + PurchaseOrderItemNCM
-				+ ", PurchaseOrderItemQuantity=" + PurchaseOrderItemQuantity + ", IsServiceType=" + IsServiceType + "]";
+				+ ", PurchaseOrderItemQuantity=" + PurchaseOrderItemQuantity + "]";
 	}
 
 }

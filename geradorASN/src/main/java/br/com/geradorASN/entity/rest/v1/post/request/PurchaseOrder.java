@@ -1,5 +1,7 @@
 package br.com.geradorASN.entity.rest.v1.post.request;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class PurchaseOrder {
 
 	private String PurchaseOrderNumber;
@@ -8,6 +10,8 @@ public class PurchaseOrder {
 
 	public PurchaseOrder() {
 		setPurchaseOrderItem(new PurchaseOrderItem());
+		setPurchaseOrderNumber(StringUtils.EMPTY);
+		setERPCode(StringUtils.EMPTY);
 	}
 
 	public String getPurchaseOrderNumber() {

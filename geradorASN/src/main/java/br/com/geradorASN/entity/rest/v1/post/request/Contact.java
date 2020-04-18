@@ -1,10 +1,13 @@
 package br.com.geradorASN.entity.rest.v1.post.request;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class Contact {
 
 	private String EmailAddress;
 	
 	public Contact() {
+		setEmailAddress(StringUtils.EMPTY);
 	}
 
 	public String getEmailAddress() {

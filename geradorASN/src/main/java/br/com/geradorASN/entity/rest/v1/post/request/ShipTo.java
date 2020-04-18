@@ -1,5 +1,7 @@
 package br.com.geradorASN.entity.rest.v1.post.request;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class ShipTo {
 
 	private String Name;
@@ -9,6 +11,9 @@ public class ShipTo {
 	
 	public ShipTo() {
 		setAddress(new Address());
+		setName(StringUtils.EMPTY);
+		setFiscalIdentifier(StringUtils.EMPTY);
+		setCountryCode(StringUtils.EMPTY);
 	}
 	
 	public String getName() {

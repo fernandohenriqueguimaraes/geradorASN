@@ -1,5 +1,7 @@
 package br.com.geradorASN.entity.rest.v1.post.request;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class Company {
 
 	private String Code;
@@ -10,6 +12,10 @@ public class Company {
 
 	public Company() {
 		setContact(new Contact());
+		setCode(StringUtils.EMPTY);
+		setName(StringUtils.EMPTY);
+		setFiscalIdentifier(StringUtils.EMPTY);
+		setCountryCode(StringUtils.EMPTY);
 	}
 
 	public String getCode() {

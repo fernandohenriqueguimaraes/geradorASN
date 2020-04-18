@@ -70,6 +70,7 @@ public class ZipService {
 	private static String CODIGO_XML_PESO_BRUTO_TOTAL				      = "pesoB";
 	private static String CODIGO_XML_CODIGO_ISO_PAIS				      = "xPais";
 	private static String CODIGO_XML_CODIGO_INTERNO_FORNECEDOR 			  = "nItemPed";
+	private static String RECLAIM_ORIGIN_CITY_CODE_PREFIX				  = "BR";
 	
 	public ZipService(@Value("${br.com.geradorASN.service.ZipService.zipDestinationFolder}") String zipDestinationFolder,
 			@Value("${br.com.geradorASN.service.ZipService.xmlDestinationFolder}") String xmlDestinationFolder) {
@@ -164,8 +165,8 @@ public class ZipService {
 								? eElement.getElementsByTagName(CODIGO_XML_CODIGO_ERP).item(0).getTextContent()
 								: StringUtils.EMPTY);
 				asnItem.setQuantity(eElement.getElementsByTagName(CODIGO_XML_QUANTIDADE_VOLUME).item(0) != null
-						? new BigDecimal(eElement.getElementsByTagName(CODIGO_XML_QUANTIDADE_VOLUME).item(0).getTextContent())
-						: new BigDecimal(0));
+						? Integer.parseInt(eElement.getElementsByTagName(CODIGO_XML_QUANTIDADE_VOLUME).item(0).getTextContent())
+						: 0);
 				asnItem.getShipToItem()
 						.setName(eElement.getElementsByTagName(CODIGO_XML_RAZAO_SOCIAL).item(0) != null
 								? eElement.getElementsByTagName(CODIGO_XML_RAZAO_SOCIAL).item(0).getTextContent()
@@ -209,8 +210,7 @@ public class ZipService {
 								? eElement.getElementsByTagName(CODIGO_XML_VALOR_NOTA_FISCAL).item(0).getTextContent()
 								: StringUtils.EMPTY));
 				advancedShipmentNotificationPost.setIssuingDate(eElement.getElementsByTagName(CODIGO_XML_DATA_EMISSAO).item(0) != null
-						? DataUtil.getIssuingDateFormat(eElement.getElementsByTagName(CODIGO_XML_DATA_EMISSAO).item(0).getTextContent())
-						: StringUtils.EMPTY);
+						? DataUtil.getIssuingDateFormat() : StringUtils.EMPTY);
 				advancedShipmentNotificationPost.setNfeNumber(eElement.getElementsByTagName(CODIGO_XML_CHAVE_ACESSO_NOTA_FISCAL_ELETRONICA).item(0) != null
 						? eElement.getElementsByTagName(CODIGO_XML_CHAVE_ACESSO_NOTA_FISCAL_ELETRONICA).item(0).getTextContent()
 						: StringUtils.EMPTY);
@@ -226,7 +226,7 @@ public class ZipService {
 				advancedShipmentNotificationPost.getReclaimOrigin().getAddress()
 						.setStreetAddress((eElement.getElementsByTagName(CODIGO_XML_ENDERECO_LOGRADOURO).item(0) != null
 								? eElement.getElementsByTagName(CODIGO_XML_ENDERECO_LOGRADOURO).item(0).getTextContent()
-								: StringUtils.EMPTY)
+								: StringUtils.EMPTY) + StringUtils.SPACE
 								+ (eElement.getElementsByTagName(CODIGO_XML_ENDERECO_NUMERO).item(0) != null
 										? eElement.getElementsByTagName(CODIGO_XML_ENDERECO_NUMERO).item(0).getTextContent()
 										: StringUtils.EMPTY));
@@ -244,7 +244,7 @@ public class ZipService {
 								: StringUtils.EMPTY);
 				advancedShipmentNotificationPost.getReclaimOrigin().getAddress()
 						.setCityCode(eElement.getElementsByTagName(CODIGO_XML_ENDERECO_CODIGO_MUNICIPIO).item(0) != null
-								? eElement.getElementsByTagName(CODIGO_XML_ENDERECO_CODIGO_MUNICIPIO).item(0).getTextContent()
+								? RECLAIM_ORIGIN_CITY_CODE_PREFIX + eElement.getElementsByTagName(CODIGO_XML_ENDERECO_CODIGO_MUNICIPIO).item(0).getTextContent()
 								: StringUtils.EMPTY);
 				advancedShipmentNotificationPost.getShipTo()
 						.setName(eElement.getElementsByTagName(CODIGO_XML_RAZAO_SOCIAL).item(0) != null
@@ -301,8 +301,8 @@ public class ZipService {
 								: new BigDecimal(0));
 				advancedShipmentNotificationPost
 						.setVolumeTotalQuantity(eElement.getElementsByTagName(CODIGO_XML_QUANTIDADE_VOLUME).item(0) != null
-								? new BigDecimal(eElement.getElementsByTagName(CODIGO_XML_QUANTIDADE_VOLUME).item(0).getTextContent())
-								: new BigDecimal(0));
+								? Integer.parseInt(eElement.getElementsByTagName(CODIGO_XML_QUANTIDADE_VOLUME).item(0).getTextContent())
+								: 0);
 			}
 		}
 		

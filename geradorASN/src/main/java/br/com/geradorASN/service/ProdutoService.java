@@ -58,7 +58,7 @@ public class ProdutoService implements GeradorTabelasService<Produto> {
 			List<Produto> produtoDb = getProdutoByCad(produtoExtraido.getCad());
 			if (!getProdutoByCad(produtoExtraido.getCad()).isEmpty()) {
 				produtos.add(produtoDb.get(0));
-				log.error("CAD Michelan já encontrado na tabela Produto.");
+				log.error("CAD Michelin já encontrado na tabela Produto.");
 				continue;
 			}
 			
