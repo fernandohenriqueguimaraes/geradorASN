@@ -23,6 +23,7 @@ import br.com.geradorASN.exception.ProdutoNotFoundException;
 import br.com.geradorASN.exception.RestErrorException;
 import br.com.geradorASN.service.EmpresaService;
 import br.com.geradorASN.service.GeradorASNService;
+import br.com.geradorASN.service.ParametroService;
 import br.com.geradorASN.service.ProdutoService;
 import br.com.geradorASN.service.RelatorioService;
 
@@ -33,6 +34,7 @@ import br.com.geradorASN.service.RelatorioService;
  *
  */
 @RestController
+@RequestMapping("/")
 public class GeradorASNController {
 
 	private static final Logger log = LoggerFactory.getLogger(GeradorASNController.class);
@@ -44,6 +46,9 @@ public class GeradorASNController {
 	private EmpresaService empresaService;
 	
 	@Autowired
+	private ParametroService parametroService;
+	
+	@Autowired
 	private RelatorioService relatorioService;
 
 	@Autowired
@@ -53,7 +58,9 @@ public class GeradorASNController {
 	public ModelAndView init() {
 		ModelAndView mv = new ModelAndView("resultado");
 		List<Relatorio>	resultados = relatorioService.listarResultados();
+		String dataCorte = parametroService.getParametroByChave(ParametroService.PARAMETRO_DATA_CORTE);
 		mv.addObject("resultados", resultados);
+		mv.addObject("datacorte", dataCorte);
 		return mv;
 	}
 
@@ -90,10 +97,10 @@ public class GeradorASNController {
 
 	@RequestMapping(value = "/gerarASN", method = RequestMethod.GET)
 	@ResponseBody
-	public List<AdvancedShipmentNotificationPost> gerarASN() {
-		List<AdvancedShipmentNotificationPost> advancedShipmentNotificationPostList = new ArrayList<AdvancedShipmentNotificationPost>();
+	public ModelAndView gerarASN() {
+				
 		try {
-			advancedShipmentNotificationPostList = (List<AdvancedShipmentNotificationPost>) geradorASNService.gerarASN();
+			geradorASNService.gerarASN();
 		} catch (RestErrorException | ParseException | IOException | ClassNotFoundException e) {
 			log.error(e.getMessage());
 			e.printStackTrace();
@@ -104,7 +111,8 @@ public class GeradorASNController {
 			log.error(e.getMessage());
 			e.printStackTrace();
 		}
-		return advancedShipmentNotificationPostList;
+		
+		return new ModelAndView("redirect:/");
 
 	}
 	

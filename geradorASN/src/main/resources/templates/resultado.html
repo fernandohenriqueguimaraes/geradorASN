@@ -8,53 +8,79 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
 <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
 <title>Geração ASN</title>
-	<link rel="stylesheet"	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"></link>
-  	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
-    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}" type="text/css">
-	<link rel="stylesheet" th:href="@{/css/bibnet.css}" type="text/css">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"></link>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
+<link rel="stylesheet" th:href="@{/css/font-awesome.min.css}"
+	type="text/css">
+<link rel="stylesheet" th:href="@{/css/bibnet.css}" type="text/css">
 </head>
 
 <body>
 
 	<div class="container">
-			
+
+		<fieldset class="border p-2">
+			<legend class="w-auto">Ações</legend>
+
+
+			<div class="text-center">
+				<form class="form" action="#" th:action="@{/gerarASN}" method="get">
+					<table>
+						<tr>
+							<td>
+								<button type="submit" id="gerarASN" class="btn btn-large btn-success" style="margin-left:20px" th:text="'Gerar ASNs'"></button>
+							</td>
+							<td th:text="'Ultima Atualização: ' + ${datacorte}" class="small align-bottom" style="padding-left:20px" ></td>
+						</tr>
+					</table>
+				</form>
+			</div>
+
+		</fieldset>
+
 		<section layout:fragment="conteudo">
 			<fieldset class="border p-2">
-		<legend class="w-auto">Resultado</legend>
+				<legend class="w-auto">Resultado</legend>
 
-		<div style="margin:20px;">
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th scope="col">Reference</th>
-						<th scope="col" class="text-center">ASN Number</th>
-						<th scope="col" class="text-center">Status</th>
-						<th scope="col" class="text-center">Motivo</th>
-						<th scope="col" class="text-center">Data</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="resultado: ${resultados}">
-						<th scope="row" th:text="${resultado.reference}"></th>
-						<td th:text="${resultado.numeroASN}" class="text-center"></td>
-						<td th:text="${resultado.status}" class="text-center"></td>
-						<td th:text="${resultado.motivo}" class="text-center"></td>
-						<td th:text="${resultado.dataProcessamento}" class="text-center"></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+				<div style="margin: 20px;">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th scope="col">Reference</th>
+								<th scope="col" class="text-center">ASN Number</th>
+								<th scope="col" class="text-center">Status</th>
+								<th scope="col" class="text-center">Motivo</th>
+								<th scope="col" class="text-center">Data</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="resultado: ${resultados}">
+								<th scope="row" th:text="${resultado.reference}"></th>
+								<td th:text="${resultado.numeroASN}" class="text-center"></td>
+								<td th:text="${resultado.status}" class="text-center"></td>
+								<td th:text="${resultado.motivo}" class="text-center"></td>
+								<td th:text="${resultado.dataProcessamento}" class="text-center"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 
-	</fieldset>
+			</fieldset>
 		</section>
 
 	</div>
-	
+
 	<script src="https://code.jquery.com/jquery-3.4.0.slim.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.min.js"></script>		
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.0/moment.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.min.js"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.0/moment.js"></script>
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
 	<script th:src="@{/js/bibnet.js}"></script>
 	<script th:src="@{/js/Controller.js}"></script>
 	<script th:src="@{/js/ValidaForm.js}"></script>
