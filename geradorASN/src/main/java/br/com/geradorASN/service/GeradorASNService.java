@@ -209,6 +209,11 @@ public class GeradorASNService {
 
 				advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrder().getPurchaseOrderItem()
 						.setSupplierItemNumber(orderItems.get(0).getCode());
+				
+				advancedShipmentNotificationPost.getASNItems().get(0).getShipToItem().getAddress()
+				.setRegionCode(empresa.getUf());
+				
+				advancedShipmentNotificationPost.getASNItems().get(0).getShipToItem().setCountryCode(empresa.getCodigoPais());
 
 				advancedShipmentNotificationPost.getASNItems().get(0).getUnitOfMeasurement()
 						.setCode(orderItems.get(0).getUnitOfMeasureCode());
@@ -237,7 +242,6 @@ public class GeradorASNService {
 			
 			advancedShipmentNotificationPost.getShipTo().getAddress().setRegionCode(empresa.getUf());
 			advancedShipmentNotificationPost.getShipTo().setCountryCode(empresa.getCodigoPais());
-			advancedShipmentNotificationPost.setShipCityTaxCode(empresa.getIbgeCode());
 			advancedShipmentNotificationPost.getCompany().setName(empresa.getRazaoSocial());
 			
 			advancedShipmentNotificationPost.setVolumeCapacity(produto.getVolume());

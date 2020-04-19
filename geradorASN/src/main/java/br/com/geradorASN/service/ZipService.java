@@ -203,7 +203,7 @@ public class ZipService {
 								: StringUtils.EMPTY);
 				asnItem.getShipToItem().getAddress()
 						.setCityCode(eElement.getElementsByTagName(CODIGO_XML_ENDERECO_CODIGO_MUNICIPIO).item(0) != null
-								? eElement.getElementsByTagName(CODIGO_XML_ENDERECO_CODIGO_MUNICIPIO).item(0).getTextContent()
+								? RECLAIM_ORIGIN_CITY_CODE_PREFIX + eElement.getElementsByTagName(CODIGO_XML_ENDERECO_CODIGO_MUNICIPIO).item(0).getTextContent()
 								: StringUtils.EMPTY);
 				advancedShipmentNotificationPost
 						.setInvoiceValueAmount(new BigDecimal(eElement.getElementsByTagName(CODIGO_XML_VALOR_NOTA_FISCAL).item(0) != null
