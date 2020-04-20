@@ -41,6 +41,7 @@ public class NimbiService {
 	private static final Logger log = LoggerFactory.getLogger(NimbiService.class);
 
 	private static String CLASSE_PED_GERA_ARQUIVO = "PedGeraArquivo";
+	private static String STATUS_NOTA_FISCAL_VALIDADO = "01";
 
 	@Autowired
 	private ParametroService parametroService;
@@ -68,16 +69,19 @@ public class NimbiService {
 
 		notaFiscalEletronica.getNfeResponse().forEach(notaFiscal -> {
 
-			PedGeraArquivo xmlObject = new PedGeraArquivo().setSerie(getSerie(notaFiscal.getReference()))
-					.setNota(getNota(notaFiscal.getReference()))
-					.setFilial(getFilial(notaFiscal.getSupplier().getSupplierCNPJ())).setTipo(nota).setModelo(modelo);
-
 			try {
 
-				mapeamentoDadosList.add(new MapeamentoDados().setNfeNimbi(notaFiscal).setPedGeraArquivo(xmlObject)
-						.setGerado((triangulusService.consultarXMLCaminhoZip(CharMatcher.breakingWhitespace()
-								.removeFrom(XMLUtil.createXtream(CLASSE_PED_GERA_ARQUIVO).toXML(xmlObject))))));
+				if (notaFiscal.getStatus().equals(STATUS_NOTA_FISCAL_VALIDADO)) {
+					PedGeraArquivo xmlObject = new PedGeraArquivo().setSerie(getSerie(notaFiscal.getReference()))
+							.setNota(getNota(notaFiscal.getReference()))
+							.setFilial(getFilial(notaFiscal.getSupplier().getSupplierCNPJ())).setTipo(nota)
+							.setModelo(modelo);
 
+					mapeamentoDadosList.add(new MapeamentoDados().setNfeNimbi(notaFiscal).setPedGeraArquivo(xmlObject)
+							.setGerado((triangulusService.consultarXMLCaminhoZip(CharMatcher.breakingWhitespace()
+									.removeFrom(XMLUtil.createXtream(CLASSE_PED_GERA_ARQUIVO).toXML(xmlObject))))));
+				}
+				
 			} catch (ParseException ex) {
 				log.error(ex.getMessage());
 				ex.printStackTrace();

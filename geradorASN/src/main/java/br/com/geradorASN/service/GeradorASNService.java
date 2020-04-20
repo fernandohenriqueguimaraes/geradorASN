@@ -46,11 +46,11 @@ public class GeradorASNService {
 	private static String DEFAULT_PACKAGE_TYPE;
 	private static String DEFAULT_CONTAINER_TYPE;
 	private static String DEFAULT_VEHYCLE_TYPE;
-	
+
 	private List<String> CNPJMichelinPlant = new ArrayList<String>();
 	private List<String> ShipCityTaxCode = new ArrayList<String>();
 	private List<String> BoardingInstructionsText = new ArrayList<String>();
-	
+
 	private Integer sequencial;
 
 	@Autowired
@@ -103,9 +103,7 @@ public class GeradorASNService {
 		this.CNPJMichelinPlant = CNPJMichelinPlant;
 		this.ShipCityTaxCode = ShipCityTaxCode;
 		this.BoardingInstructionsText = BoardingInstructionsText;
-		
-		
-		
+
 	}
 
 	public List<AdvancedShipmentNotificationPost> gerarASN() throws RestErrorException, ParseException, IOException,
@@ -162,7 +160,8 @@ public class GeradorASNService {
 						.setMotivo("Produto: " + produto.getPartNumber() + " - " + produto.getModelo()));
 
 			} else if (!empresa.isGeraASN() && !produto.getTipoProduto().equals(TipoProdutoEnum.MEMS.getDescricao())) {
-				relatorioService.salvarRelatorio(relatorio.setStatus(RelatorioStatusEnum.CNPJ_NAO_GERA_ASN.getDescricao())
+				relatorioService
+						.salvarRelatorio(relatorio.setStatus(RelatorioStatusEnum.CNPJ_NAO_GERA_ASN.getDescricao())
 								.setMotivo("Empresa: " + cnpj + " - " + empresa.getRazaoSocial()));
 			} else {
 				relatorioService.salvarRelatorio(
@@ -187,41 +186,36 @@ public class GeradorASNService {
 			OrdemPedidoNimbiResponse pedidoResponse = nimbiService.consultarPedidoPorCodeERP(
 					advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrder().getERPCode());
 
-			// Apenas para continuar testando, tirar validação depois
-			if (!pedidoResponse.getPurchaseOrderGroupGetAPI().isEmpty()) {
+			advancedShipmentNotificationPost.getIncoterm()
+					.setCode(pedidoResponse.getPurchaseOrderGroupGetAPI().get(0).getPurchaseOrder().getIncotermCode());
+			advancedShipmentNotificationPost.getIncoterm().setDescription(
+					pedidoResponse.getPurchaseOrderGroupGetAPI().get(0).getPurchaseOrder().getIncotermDescription());
+			advancedShipmentNotificationPost.getCompany().setCountryCode(
+					pedidoResponse.getPurchaseOrderGroupGetAPI().get(0).getPurchaseOrder().getBuyerCountryCode());
+			advancedShipmentNotificationPost.getCompany().setFiscalIdentifier(
+					pedidoResponse.getPurchaseOrderGroupGetAPI().get(0).getPurchaseOrder().getBuyerTaxNumber());
+			advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrder().setPurchaseOrderNumber(
+					pedidoResponse.getPurchaseOrderGroupGetAPI().get(0).getPurchaseOrder().getId().toString());
 
-				advancedShipmentNotificationPost.getIncoterm().setCode(
-						pedidoResponse.getPurchaseOrderGroupGetAPI().get(0).getPurchaseOrder().getIncotermCode());
-				advancedShipmentNotificationPost.getIncoterm().setDescription(pedidoResponse
-						.getPurchaseOrderGroupGetAPI().get(0).getPurchaseOrder().getIncotermDescription());
-				advancedShipmentNotificationPost.getCompany().setCountryCode(
-						pedidoResponse.getPurchaseOrderGroupGetAPI().get(0).getPurchaseOrder().getBuyerCountryCode());
-				advancedShipmentNotificationPost.getCompany().setFiscalIdentifier(
-						pedidoResponse.getPurchaseOrderGroupGetAPI().get(0).getPurchaseOrder().getBuyerTaxNumber());
-				advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrder().setPurchaseOrderNumber(
-						pedidoResponse.getPurchaseOrderGroupGetAPI().get(0).getPurchaseOrder().getId().toString());
+			List<OrderItems> orderItems = pedidoResponse.getPurchaseOrderGroupGetAPI().get(0).getOrderItems().stream()
+					.filter(item -> advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrder()
+							.getPurchaseOrderItem().getPurchaseOrderItemNumber().equals(item.getLineERP()))
+					.collect(Collectors.toList());
 
-				List<OrderItems> orderItems = pedidoResponse.getPurchaseOrderGroupGetAPI().get(0).getOrderItems()
-						.stream()
-						.filter(item -> advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrder()
-								.getPurchaseOrderItem().getPurchaseOrderItemNumber().equals(item.getLineERP()))
-						.collect(Collectors.toList());
+			advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrder().getPurchaseOrderItem()
+					.setSupplierItemNumber(orderItems.get(0).getCode());
 
-				advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrder().getPurchaseOrderItem()
-						.setSupplierItemNumber(orderItems.get(0).getCode());
-				
-				advancedShipmentNotificationPost.getASNItems().get(0).getShipToItem().getAddress()
-				.setRegionCode(empresa.getUf());
-				
-				advancedShipmentNotificationPost.getASNItems().get(0).getShipToItem().setCountryCode(empresa.getCodigoPais());
+			advancedShipmentNotificationPost.getASNItems().get(0).getShipToItem().getAddress()
+					.setRegionCode(empresa.getUf());
 
-				advancedShipmentNotificationPost.getASNItems().get(0).getUnitOfMeasurement()
-						.setCode(orderItems.get(0).getUnitOfMeasureCode());
-				advancedShipmentNotificationPost.getASNItems().get(0).getUnitOfMeasurement()
-						.setDescription(orderItems.get(0).getUnitOfMeasureDescription());
-				advancedShipmentNotificationPost.getASNItems().get(0).setPackageType(DEFAULT_PACKAGE_TYPE);
-				
-			}
+			advancedShipmentNotificationPost.getASNItems().get(0).getShipToItem()
+					.setCountryCode(empresa.getCodigoPais());
+
+			advancedShipmentNotificationPost.getASNItems().get(0).getUnitOfMeasurement()
+					.setCode(orderItems.get(0).getUnitOfMeasureCode());
+			advancedShipmentNotificationPost.getASNItems().get(0).getUnitOfMeasurement()
+					.setDescription(orderItems.get(0).getUnitOfMeasureDescription());
+			advancedShipmentNotificationPost.getASNItems().get(0).setPackageType(DEFAULT_PACKAGE_TYPE);
 
 			advancedShipmentNotificationPost.setObservationTEXT(OBSERVATION_TEXT_DEFAULT_VALUE);
 			advancedShipmentNotificationPost.setAsnStatus(ASN_INITIAL_STATUS);
@@ -239,11 +233,11 @@ public class GeradorASNService {
 
 			advancedShipmentNotificationPost.getReclaimOrigin().getAddress().setRegionCode(empresa.getUf());
 			advancedShipmentNotificationPost.getReclaimOrigin().setCountryCode(empresa.getCodigoPais());
-			
+
 			advancedShipmentNotificationPost.getShipTo().getAddress().setRegionCode(empresa.getUf());
 			advancedShipmentNotificationPost.getShipTo().setCountryCode(empresa.getCodigoPais());
 			advancedShipmentNotificationPost.getCompany().setName(empresa.getRazaoSocial());
-			
+
 			advancedShipmentNotificationPost.setVolumeCapacity(produto.getVolume());
 			advancedShipmentNotificationPost.setTotalHeightMeasure(produto.getAltura());
 			advancedShipmentNotificationPost.setTotalLenghtMeasure(produto.getComprimento());
@@ -251,15 +245,17 @@ public class GeradorASNService {
 			advancedShipmentNotificationPost.setReclaimEstimatedHour(
 					parametroService.getParametroByChave(ParametroService.PARAMETRO_RECLAIM_ESTIMATED_HOUR));
 			advancedShipmentNotificationPost.setReclaimEstimatedDate(calculoReclaimEstimatedDate());
-			
-			if (advancedShipmentNotificationPost.getReclaimOrigin().getFiscalIdentifier().equals(CNPJMichelinPlant.get(0))) {
+
+			if (advancedShipmentNotificationPost.getReclaimOrigin().getFiscalIdentifier()
+					.equals(CNPJMichelinPlant.get(0))) {
 				advancedShipmentNotificationPost.setShipCityTaxCode(ShipCityTaxCode.get(0));
 				advancedShipmentNotificationPost.setBoardingInstructionsText(BoardingInstructionsText.get(0));
-			} else if (advancedShipmentNotificationPost.getReclaimOrigin().getFiscalIdentifier().equals(CNPJMichelinPlant.get(1))) {
+			} else if (advancedShipmentNotificationPost.getReclaimOrigin().getFiscalIdentifier()
+					.equals(CNPJMichelinPlant.get(1))) {
 				advancedShipmentNotificationPost.setShipCityTaxCode(ShipCityTaxCode.get(1));
 				advancedShipmentNotificationPost.setBoardingInstructionsText(BoardingInstructionsText.get(1));
 			}
-			
+
 		} catch (ParseException | RestErrorException e) {
 			log.error(e.getMessage());
 			e.printStackTrace();
