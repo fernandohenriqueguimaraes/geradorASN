@@ -15,16 +15,36 @@
 <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}"
 	type="text/css">
 <link rel="stylesheet" th:href="@{/css/bibnet.css}" type="text/css">
+
+<script>
+function waiting(){
+	document.getElementById('waiting').style.display='block';
+}
+</script>
+<style>
+#waiting{
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:100%;
+	background-color:rgba(0, 0, 0, 0.5);
+	display:none;
+	text-align:center;
+}
+</style>
+
 </head>
 
 <body>
-
+	
 	<nav class="navbar navbar-light bg-light">
 		<a class="navbar-brand" th:onclick="|window.location.href='@{${linkBibnet}}'|"> <img
 			src="https://agricola.michelin.com.br/var/plain_site/storage/images/site-br/16196-22-por-BR/Site-BR.png"
 			class="logo d-inline-block align-top" alt=""></img>
 		</a>
 	</nav>
+	<div id="waiting"><img th:src="@{/img/loading.gif}" width="50" style="padding-top:20%" /></div>
 
 	<div class="container">
 
@@ -34,15 +54,15 @@
 
 			<div class="text-center">
 				<form class="form" action="#" th:action="@{/gerarASN}" method="get">
-					<button type="button" id="bibnetButton" th:onclick="|window.location.href='@{${linkBibnet}}'|" class="btn btn-secondary btn-lg btn-menu">Voltar para Bibnet</button>
-					<button type="submit" id="gerarASN" class="btn btn-secondary btn-lg btn-menu" th:text="'Gerar ASNs'"></button>
+					<button type="button" id="bibnetButton" th:onclick="|window.location.href='@{${linkBibnet}}'|" class="btn btn-secondary btn-lg btn-menu" th:text="'Pedidos em Aberto'"></button>
+					<button type="submit" id="gerarASN" onclick="waiting();" class="btn btn-secondary btn-lg btn-menu" th:text="'Gerar ASNs'"></button>
 				</form>
 			</div>
 
 		</fieldset>
 
 			<fieldset class="border p-2">
-				<legend class="w-auto">Resultado</legend>
+				<legend class="w-auto">Relatório de geração de ASN</legend>
 
 				<div style="margin: 20px;">
 					<table class="table table-striped">
