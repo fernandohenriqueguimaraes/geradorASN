@@ -25,13 +25,15 @@ public class ParametroService {
 	public static String PARAMETRO_RECLAIM_ESTIMATED_HOUR;
 	public static String PARAMETRO_DIAS_ATUALIZACAO_NFE;
 	public static String PARAMETRO_SEQUENCIAL_ASN;
+	public static String PARAMETRO_LINK_BIBNET;
 
 	public ParametroService(@Value("${br.com.geradorASN.service.ParametroService.DataCorte}") String dataCorte,
 			@Value("${br.com.geradorASN.service.ParametroService.TipoNota}") String tipoNota,
 			@Value("${br.com.geradorASN.service.ParametroService.ModeloNota}") String modeloNota,
 			@Value("${br.com.geradorASN.service.ParametroService.ReclaimEstimatedHour}") String reclaimEstimatedHour,
 			@Value("${br.com.geradorASN.service.ParametroService.DiasAtualizacaoNFe}") String diasAtualizacaoNFe,
-			@Value("${br.com.geradorASN.service.ParametroService.SequencialASN}") String sequencialASN) {
+			@Value("${br.com.geradorASN.service.ParametroService.SequencialASN}") String sequencialASN,
+			@Value("${br.com.geradorASN.service.ParametroService.LinkBibnet}") String linkBibnet) {
 
 		PARAMETRO_DATA_CORTE = dataCorte;
 		PARAMETRO_TIPO_NOTA = tipoNota;
@@ -39,7 +41,12 @@ public class ParametroService {
 		PARAMETRO_RECLAIM_ESTIMATED_HOUR = reclaimEstimatedHour;
 		PARAMETRO_DIAS_ATUALIZACAO_NFE = diasAtualizacaoNFe;
 		PARAMETRO_SEQUENCIAL_ASN = sequencialASN;
+		PARAMETRO_LINK_BIBNET = linkBibnet;
 
+	}
+	
+	public String getLinkBibnet() {
+		return PARAMETRO_LINK_BIBNET;
 	}
 
 	public String getParametroByChave(String parametro) {

@@ -19,6 +19,13 @@
 
 <body>
 
+	<nav class="navbar navbar-light bg-light">
+		<a class="navbar-brand" th:onclick="|window.location.href='@{${linkBibnet}}'|"> <img
+			src="https://agricola.michelin.com.br/var/plain_site/storage/images/site-br/16196-22-por-BR/Site-BR.png"
+			class="logo d-inline-block align-top" alt=""></img>
+		</a>
+	</nav>
+
 	<div class="container">
 
 		<fieldset class="border p-2">
@@ -27,25 +34,19 @@
 
 			<div class="text-center">
 				<form class="form" action="#" th:action="@{/gerarASN}" method="get">
-					<table>
-						<tr>
-							<td>
-								<button type="submit" id="gerarASN" class="btn btn-large btn-success" style="margin-left:20px" th:text="'Gerar ASNs'"></button>
-							</td>
-							<td th:text="'Ultima Atualização: ' + ${datacorte}" class="small align-bottom" style="padding-left:20px" ></td>
-						</tr>
-					</table>
+					<button type="button" id="bibnetButton" th:onclick="|window.location.href='@{${linkBibnet}}'|" class="btn btn-secondary btn-lg btn-menu">Voltar para Bibnet</button>
+					<button type="submit" id="gerarASN" class="btn btn-secondary btn-lg btn-menu" th:text="'Gerar ASNs'"></button>
 				</form>
 			</div>
 
 		</fieldset>
 
-		<section layout:fragment="conteudo">
 			<fieldset class="border p-2">
 				<legend class="w-auto">Resultado</legend>
 
 				<div style="margin: 20px;">
 					<table class="table table-striped">
+						<caption  style="caption-side:top" th:text="'Ultima Atualização: ' + ${datacorte}"></caption>
 						<thead>
 							<tr>
 								<th scope="col">Reference</th>
@@ -68,7 +69,6 @@
 				</div>
 
 			</fieldset>
-		</section>
 
 	</div>
 
