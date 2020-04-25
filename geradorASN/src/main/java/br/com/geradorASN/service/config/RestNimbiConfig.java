@@ -27,6 +27,7 @@ public abstract class RestNimbiConfig {
 	}
 
 	public abstract UriComponents getUriPeriodo(String strInicio, String strFim) throws ParseException;
+	public abstract UriComponents getUriPostAdvancedShipmentNotificationPost() throws ParseException;
 	public abstract UriComponents getUriERPCode(String erpCode) throws ParseException;
 	public abstract HttpHeaders getHeaders();
 }

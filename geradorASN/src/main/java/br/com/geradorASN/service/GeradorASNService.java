@@ -106,24 +106,19 @@ public class GeradorASNService {
 
 	}
 
-	public List<AdvancedShipmentNotificationPost> gerarASN() throws RestErrorException, ParseException, IOException,
+	public void gerarASN() throws RestErrorException, ParseException, IOException,
 			ClassNotFoundException, EmpresaNotFoundException, ProdutoNotFoundException {
 
-		List<AdvancedShipmentNotificationPost> advancedShipmentNotificationPostList = gerarRelatorio(
-				zipService.consultarArquivosZip(nimbiService.consultarXMLCaminhoZip()));
-
+		gerarRelatorio(zipService.consultarArquivosZip(nimbiService.consultarXMLCaminhoZip()));
 		parametroService.updateParametroDataCorte();
-
-		return advancedShipmentNotificationPostList;
 
 	}
 
-	private List<AdvancedShipmentNotificationPost> gerarRelatorio(List<MapeamentoDados> mapeamentoDadosList)
+	private void gerarRelatorio(List<MapeamentoDados> mapeamentoDadosList)
 			throws EmpresaNotFoundException, ProdutoNotFoundException {
 
 		sequencial = Integer.parseInt(parametroService.getParametroByChave(ParametroService.PARAMETRO_SEQUENCIAL_ASN));
-		List<AdvancedShipmentNotificationPost> listaNFeASN = new ArrayList<AdvancedShipmentNotificationPost>();
-
+		
 		mapeamentoDadosList.forEach(mapeamento -> {
 
 			String cnpj = mapeamento.getNfeNimbi().getSupplier().getSupplierCNPJ();
@@ -141,20 +136,29 @@ public class GeradorASNService {
 
 			Empresa empresa = empresas.get(0);
 			Produto produto = produtos.get(0);
+			
 			Relatorio relatorio = new Relatorio().setReference(mapeamento.getNfeNimbi().getReference());
 
+			mapeamento.getAdvancedShipmentNotificationPost().setNfeNumber(mapeamento.getNfeNimbi().getAccessKey());
+            
+            mapeamento.setAdvancedShipmentNotificationPost(complementarInfoAdvancedShipmentNotificationPost(
+            mapeamento.getAdvancedShipmentNotificationPost(), empresa, produto));
+            
 			if (empresa.isGeraASN() && !produto.getTipoProduto().equals(TipoProdutoEnum.MEMS.getDescricao())) {
-
-				mapeamento.getAdvancedShipmentNotificationPost().setNfeNumber(mapeamento.getNfeNimbi().getAccessKey());
+				
 				mapeamento.getAdvancedShipmentNotificationPost().setAsnNumber(gerarSequencialASNNumber());
-				mapeamento.setAdvancedShipmentNotificationPost(complementarInfoAdvancedShipmentNotificationPost(
-						mapeamento.getAdvancedShipmentNotificationPost(), empresa, produto));
-
-				relatorioService.salvarRelatorio(relatorio.setStatus(RelatorioStatusEnum.ASN_GERADO.getDescricao())
-						.setNumeroASN(mapeamento.getAdvancedShipmentNotificationPost().getAsnNumber()));
-
-				listaNFeASN.add(mapeamento.getAdvancedShipmentNotificationPost());
-
+				
+				try {
+					if (nimbiService.postAdvancedShipmentNotificationPost(mapeamento.getAdvancedShipmentNotificationPost())) {
+					    relatorioService.salvarRelatorio(relatorio.setStatus(RelatorioStatusEnum.ASN_GERADO.getDescricao())
+		                        .setNumeroASN(mapeamento.getAdvancedShipmentNotificationPost().getAsnNumber()));
+					}
+				} catch (ParseException e) {
+					e.printStackTrace();
+				} catch (RestErrorException e) {
+					e.printStackTrace();
+				}
+				
 			} else if (empresa.isGeraASN() && produto.getTipoProduto().equals(TipoProdutoEnum.MEMS.getDescricao())) {
 				relatorioService.salvarRelatorio(relatorio.setStatus(RelatorioStatusEnum.PRODUTO_MEMS.getDescricao())
 						.setMotivo("Produto: " + produto.getPartNumber() + " - " + produto.getModelo()));
@@ -173,8 +177,6 @@ public class GeradorASNService {
 		});
 
 		parametroService.atualizarParametro(sequencial.toString(), ParametroService.PARAMETRO_SEQUENCIAL_ASN);
-
-		return listaNFeASN;
 
 	}
 
@@ -195,7 +197,7 @@ public class GeradorASNService {
 			advancedShipmentNotificationPost.getCompany().setFiscalIdentifier(
 					pedidoResponse.getPurchaseOrderGroupGetAPI().get(0).getPurchaseOrder().getBuyerTaxNumber());
 			advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrder().setPurchaseOrderNumber(
-					pedidoResponse.getPurchaseOrderGroupGetAPI().get(0).getPurchaseOrder().getId().toString());
+					Integer.parseInt(pedidoResponse.getPurchaseOrderGroupGetAPI().get(0).getPurchaseOrder().getId().toString()));
 
 			List<OrderItems> orderItems = pedidoResponse.getPurchaseOrderGroupGetAPI().get(0).getOrderItems().stream()
 					.filter(item -> advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrder()

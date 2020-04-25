@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public class PurchaseOrderItem {
 
-	private String PurchaseOrderItemNumber;
+	private Integer PurchaseOrderItemNumber;
 	private String Description;
 	private String SupplierItemNumber;
 	private String PurchaseOrderItemNCM;
@@ -13,11 +13,11 @@ public class PurchaseOrderItem {
 	public PurchaseOrderItem() {
 	}
 
-	public String getPurchaseOrderItemNumber() {
+	public Integer getPurchaseOrderItemNumber() {
 		return PurchaseOrderItemNumber;
 	}
 
-	public void setPurchaseOrderItemNumber(String purchaseOrderItemNumber) {
+	public void setPurchaseOrderItemNumber(Integer purchaseOrderItemNumber) {
 		PurchaseOrderItemNumber = purchaseOrderItemNumber;
 	}
 

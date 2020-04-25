@@ -54,7 +54,7 @@ public class OrderItems {
 	private String UnitOfMeasureDescription;
 
 	@JsonProperty("LineERP")
-	private String LineERP;
+	private Integer LineERP;
 
 	@JsonProperty("NatureOfOperationCode")
 	private String NatureOfOperationCode;
@@ -239,11 +239,11 @@ public class OrderItems {
 		UnitOfMeasureDescription = unitOfMeasureDescription;
 	}
 
-	public String getLineERP() {
+	public Integer getLineERP() {
 		return LineERP;
 	}
 
-	public void setLineERP(String lineERP) {
+	public void setLineERP(Integer lineERP) {
 		LineERP = lineERP;
 	}
 

@@ -140,14 +140,10 @@ public class ZipService {
 				mapeamento.setCodigoProduto(eElement.getElementsByTagName(CODIGO_XML_CODIGO_PRODUTO).item(0) != null
 						? eElement.getElementsByTagName(CODIGO_XML_CODIGO_PRODUTO).item(0).getTextContent()
 						: StringUtils.EMPTY);
-				asnItem.getPurchaseOrder()
-						.setPurchaseOrderNumber(eElement.getElementsByTagName(CODIGO_XML_NUMERO_PEDIDO).item(0) != null
-								? eElement.getElementsByTagName(CODIGO_XML_NUMERO_PEDIDO).item(0).getTextContent()
-								: StringUtils.EMPTY);
 				asnItem.getPurchaseOrder().getPurchaseOrderItem()
 						.setPurchaseOrderItemNumber(eElement.getElementsByTagName(CODIGO_XML_CODIGO_INTERNO_FORNECEDOR).item(0) != null
-								? eElement.getElementsByTagName(CODIGO_XML_CODIGO_INTERNO_FORNECEDOR).item(0).getTextContent()
-								: StringUtils.EMPTY);
+								? Integer.parseInt(eElement.getElementsByTagName(CODIGO_XML_CODIGO_INTERNO_FORNECEDOR).item(0).getTextContent())
+								: 0);
 				asnItem.getPurchaseOrder().getPurchaseOrderItem()
 						.setDescription(eElement.getElementsByTagName(CODIGO_XML_DESCRICAO_ITEM).item(0) != null
 								? eElement.getElementsByTagName(CODIGO_XML_DESCRICAO_ITEM).item(0).getTextContent()

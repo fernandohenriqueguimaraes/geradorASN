@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,7 @@ import br.com.geradorASN.dao.ParametroDao;
 import br.com.geradorASN.entity.MapeamentoDados;
 import br.com.geradorASN.entity.rest.v1.get.response.NotaFiscalEletronicaNimbiResponse;
 import br.com.geradorASN.entity.rest.v1.post.request.AdvancedShipmentNotificationPost;
+import br.com.geradorASN.entity.rest.v1.post.response.RetornoGeracaoASNPost;
 import br.com.geradorASN.entity.rest.v4.get.response.OrdemPedidoNimbiResponse;
 import br.com.geradorASN.entity.rest.v4.get.response.OrderItems;
 import br.com.geradorASN.entity.xml.Gerado;
@@ -131,6 +133,26 @@ public class NimbiService {
 
 		return response.getBody();
 
+	}
+	
+	public Boolean postAdvancedShipmentNotificationPost(
+			AdvancedShipmentNotificationPost advancedShipmentNotificationPost) throws ParseException, RestErrorException {
+		
+		UriComponents uri = restNimbiConfig.getUriPostAdvancedShipmentNotificationPost();
+		
+		log.info("Endpoint de POST ao Nimbi: {}", uri.toUriString());
+		ResponseEntity<RetornoGeracaoASNPost> response = (ResponseEntity<RetornoGeracaoASNPost>) (restService
+				.request(uri, restNimbiConfig.getHeaders(), HttpMethod.POST, advancedShipmentNotificationPost,
+				        RetornoGeracaoASNPost.class));
+
+		log.debug("Status Code: {}, Response: {}", response.getStatusCode(), response.getBody());
+		
+		if (!response.getStatusCode().equals(HttpStatus.OK)) {
+		    return false;
+		} 
+		
+		return true;
+		
 	}
 
 	private String getFilial(String supplierCNPJ) {
