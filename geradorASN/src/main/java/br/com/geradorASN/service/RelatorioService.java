@@ -1,6 +1,8 @@
 package br.com.geradorASN.service;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +38,9 @@ public class RelatorioService {
 	}
 	
 	public List<Relatorio> listarResultados() {
-		return (List<Relatorio>) relatorioRepository.findAll();
+		return ((List<Relatorio>) relatorioRepository.findAll()).stream().sorted(Comparator.comparingLong(Relatorio::getId)
+		        .reversed())
+	            .collect(Collectors.toList());
 	}
 
 }
