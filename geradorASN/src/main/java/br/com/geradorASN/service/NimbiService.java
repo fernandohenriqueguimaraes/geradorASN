@@ -148,6 +148,7 @@ public class NimbiService {
 		log.debug("Status Code: {}, Response: {}", response.getStatusCode(), response.getBody());
 		
 		if (!response.getStatusCode().equals(HttpStatus.OK)) {
+		    log.error(response.getBody().toString());
 		    return false;
 		} 
 		
