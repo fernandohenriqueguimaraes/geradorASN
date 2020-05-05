@@ -112,7 +112,7 @@ public class GeradorASNService {
     public void gerarASN() throws RestErrorException, ParseException, IOException,
             ClassNotFoundException, EmpresaNotFoundException, ProdutoNotFoundException {
 
-        zipService.consultarArquivosZip(nimbiService.consultarXMLCaminhoZip());
+        gerarRelatorio(zipService.consultarArquivosZip(nimbiService.consultarXMLCaminhoZip()));
         parametroService.updateParametroDataCorte();
 
     }
@@ -120,7 +120,7 @@ public class GeradorASNService {
     @SuppressWarnings("unused")
     private void gerarRelatorio(List<MapeamentoDados> mapeamentoDadosList)
             throws EmpresaNotFoundException, ProdutoNotFoundException {
-        
+
         sequencial = Integer.parseInt(parametroService.getParametroByChave(ParametroService.PARAMETRO_SEQUENCIAL_ASN));
 
         mapeamentoDadosList.forEach(mapeamento -> {
@@ -152,23 +152,23 @@ public class GeradorASNService {
 
                 mapeamento.getAdvancedShipmentNotificationPost().setAsnNumber(gerarSequencialASNNumber());
 
-                 try {
-                 ResponseEntity<RetornoGeracaoASNPost> response =
-                 nimbiService.postAdvancedShipmentNotificationPost(mapeamento.getAdvancedShipmentNotificationPost());
+                try {
+                    ResponseEntity<RetornoGeracaoASNPost> response = nimbiService
+                            .postAdvancedShipmentNotificationPost(mapeamento.getAdvancedShipmentNotificationPost());
 
-                 if (response.getStatusCode() == HttpStatus.ACCEPTED) {
-                relatorioService.salvarRelatorio(relatorio.setStatus(RelatorioStatusEnum.ASN_GERADO.getDescricao())
-                        .setNumeroASN(mapeamento.getAdvancedShipmentNotificationPost().getAsnNumber()));
-                  } else {
-                    relatorioService.salvarRelatorio(relatorio.setStatus(RelatorioStatusEnum.ASN_NAO_GERADO.getDescricao())
-                            .setMotivo(response.getBody().toString())
-                            .setNumeroASN(mapeamento.getAdvancedShipmentNotificationPost().getAsnNumber()));
-                }
+                    if (response.getStatusCode() == HttpStatus.ACCEPTED) {
+                        relatorioService.salvarRelatorio(relatorio.setStatus(RelatorioStatusEnum.ASN_GERADO.getDescricao())
+                                .setNumeroASN(mapeamento.getAdvancedShipmentNotificationPost().getAsnNumber()));
+                    } else {
+                        relatorioService.salvarRelatorio(relatorio.setStatus(RelatorioStatusEnum.ASN_NAO_GERADO.getDescricao())
+                                .setMotivo(response.getBody().toString())
+                                .setNumeroASN(mapeamento.getAdvancedShipmentNotificationPost().getAsnNumber()));
+                    }
                 } catch (ParseException e) {
-                e.printStackTrace();
+                    e.printStackTrace();
                 } catch (RestErrorException e) {
-                e.printStackTrace();
-                } 
+                    e.printStackTrace();
+                }
 
             } else if (empresa.isGeraASN() && produto.getTipoProduto().equals(TipoProdutoEnum.MEMS.getDescricao())) {
                 relatorioService.salvarRelatorio(relatorio.setStatus(RelatorioStatusEnum.PRODUTO_MEMS.getDescricao())
@@ -209,10 +209,12 @@ public class GeradorASNService {
                     pedidoResponse.getPurchaseOrderGroupGetAPI().get(0).getPurchaseOrder().getBuyerTaxNumber());
             advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrder().setPurchaseOrderNumber(
                     pedidoResponse.getPurchaseOrderGroupGetAPI().get(0).getPurchaseOrder().getId().toString());
+            advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrderNumber().setPurchaseOrderNumber(
+                    Integer.parseInt(pedidoResponse.getPurchaseOrderGroupGetAPI().get(0).getPurchaseOrder().getId().toString()));
 
             List<OrderItems> orderItems = pedidoResponse.getPurchaseOrderGroupGetAPI().get(0).getOrderItems().stream()
                     .filter(item -> advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrder()
-                            .getPurchaseOrderItem().getPurchaseOrderItemNumber().equals(item.getLineERP()))
+                            .getPurchaseOrderItem().getPurchaseOrderItemNumber().equals(item.getLineERP().toString()))
                     .collect(Collectors.toList());
 
             advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrder().getPurchaseOrderItem()
@@ -230,7 +232,8 @@ public class GeradorASNService {
                     .setDescription(orderItems.get(0).getUnitOfMeasureDescription());
             advancedShipmentNotificationPost.getASNItems().get(0).setPackageType(DEFAULT_PACKAGE_TYPE);
             advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrderNumber()
-                    .setPurchaseOrderDate(DataUtil.formatarData(DataUtil.convertDateTimeFromISO(pedidoResponse.getPurchaseOrderGroupGetAPI().get(0).getPurchaseOrder().getCreatedDate())));
+                    .setPurchaseOrderDate(DataUtil.formatarData(DataUtil.convertDateTimeFromISO(
+                            pedidoResponse.getPurchaseOrderGroupGetAPI().get(0).getPurchaseOrder().getCreatedDate())));
 
             advancedShipmentNotificationPost.setObservationTEXT(OBSERVATION_TEXT_DEFAULT_VALUE);
             advancedShipmentNotificationPost.setAsnStatus(ASN_INITIAL_STATUS);

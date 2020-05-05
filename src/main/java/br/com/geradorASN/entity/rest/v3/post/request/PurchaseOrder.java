@@ -5,11 +5,11 @@ import org.apache.commons.lang3.StringUtils;
 public class PurchaseOrder {
 
 	private String PurchaseOrderNumber;
-	private PurchaseOrderItem purchaseOrderItem;
+	private PurchaseOrderItemString purchaseOrderItem;
 	private String ERPCode;
 
 	public PurchaseOrder() {
-		setPurchaseOrderItem(new PurchaseOrderItem());
+		setPurchaseOrderItem(new PurchaseOrderItemString());
 		setPurchaseOrderNumber(StringUtils.EMPTY);
 		setERPCode(StringUtils.EMPTY);
 	}
@@ -22,11 +22,11 @@ public class PurchaseOrder {
 		PurchaseOrderNumber = purchaseOrderNumber;
 	}
 
-	public PurchaseOrderItem getPurchaseOrderItem() {
+	public PurchaseOrderItemString getPurchaseOrderItem() {
 		return purchaseOrderItem;
 	}
 
-	public void setPurchaseOrderItem(PurchaseOrderItem purchaseOrderItem) {
+	public void setPurchaseOrderItem(PurchaseOrderItemString purchaseOrderItem) {
 		this.purchaseOrderItem = purchaseOrderItem;
 	}
 

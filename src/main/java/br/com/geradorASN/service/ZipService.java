@@ -142,8 +142,12 @@ public class ZipService {
 						: StringUtils.EMPTY);
 				asnItem.getPurchaseOrder().getPurchaseOrderItem()
 						.setPurchaseOrderItemNumber(eElement.getElementsByTagName(CODIGO_XML_CODIGO_INTERNO_FORNECEDOR).item(0) != null
-								? Integer.parseInt(eElement.getElementsByTagName(CODIGO_XML_CODIGO_INTERNO_FORNECEDOR).item(0).getTextContent())
-								: 0);
+                                ? eElement.getElementsByTagName(CODIGO_XML_CODIGO_INTERNO_FORNECEDOR).item(0).getTextContent()
+                                : StringUtils.EMPTY);
+				asnItem.getPurchaseOrderNumber().getPurchaseOrderItem()
+				        .setPurchaseOrderItemNumber(eElement.getElementsByTagName(CODIGO_XML_CODIGO_INTERNO_FORNECEDOR).item(0) != null
+                                ? Integer.parseInt(eElement.getElementsByTagName(CODIGO_XML_CODIGO_INTERNO_FORNECEDOR).item(0).getTextContent())
+                                : 0);
 				asnItem.getPurchaseOrder().getPurchaseOrderItem()
 						.setDescription(eElement.getElementsByTagName(CODIGO_XML_DESCRICAO_ITEM).item(0) != null
 								? eElement.getElementsByTagName(CODIGO_XML_DESCRICAO_ITEM).item(0).getTextContent()
@@ -163,6 +167,10 @@ public class ZipService {
 						.setERPCode(eElement.getElementsByTagName(CODIGO_XML_CODIGO_ERP).item(0) != null
 								? eElement.getElementsByTagName(CODIGO_XML_CODIGO_ERP).item(0).getTextContent()
 								: StringUtils.EMPTY);
+				asnItem.getPurchaseOrderNumber()
+                .setERPCode(eElement.getElementsByTagName(CODIGO_XML_CODIGO_ERP).item(0) != null
+                        ? eElement.getElementsByTagName(CODIGO_XML_CODIGO_ERP).item(0).getTextContent()
+                        : StringUtils.EMPTY);
 				asnItem.setQuantity(eElement.getElementsByTagName(CODIGO_XML_QUANTIDADE_VOLUME).item(0) != null
 						? Integer.parseInt(eElement.getElementsByTagName(CODIGO_XML_QUANTIDADE_VOLUME).item(0).getTextContent())
 						: 0);

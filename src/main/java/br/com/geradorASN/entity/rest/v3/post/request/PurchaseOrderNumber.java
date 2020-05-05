@@ -5,12 +5,12 @@ import org.apache.commons.lang3.StringUtils;
 public class PurchaseOrderNumber {
     
     private Integer purchaseOrderNumber;
-    private PurchaseOrderItem PurchaseOrderItem;
+    private PurchaseOrderItemInteger PurchaseOrderItem;
     private String PurchaseOrderDate;
     private String ERPCode;
     
     public PurchaseOrderNumber() {
-        setPurchaseOrderItem(new PurchaseOrderItem());
+        setPurchaseOrderItem(new PurchaseOrderItemInteger());
         setPurchaseOrderNumber(0);
         setERPCode(StringUtils.EMPTY);
         setPurchaseOrderDate(StringUtils.EMPTY);
@@ -24,11 +24,11 @@ public class PurchaseOrderNumber {
         this.purchaseOrderNumber = purchaseOrderNumber;
     }
     
-    public PurchaseOrderItem getPurchaseOrderItem() {
+    public PurchaseOrderItemInteger getPurchaseOrderItem() {
         return PurchaseOrderItem;
     }
     
-    public void setPurchaseOrderItem(PurchaseOrderItem purchaseOrderItem) {
+    public void setPurchaseOrderItem(PurchaseOrderItemInteger purchaseOrderItem) {
         PurchaseOrderItem = purchaseOrderItem;
     }
     
@@ -50,7 +50,7 @@ public class PurchaseOrderNumber {
 
     @Override
     public String toString() {
-        return "PurchaseOrderNumber [purchaseOrderNumber=" + purchaseOrderNumber + ", PurchaseOrderItem=" + PurchaseOrderItem
+        return "PurchaseOrderNumber [purchaseOrderNumber=" + purchaseOrderNumber + ", PurchaseOrderItemString=" + PurchaseOrderItem
                 + ", PurchaseOrderDate=" + PurchaseOrderDate + ", ERPCode=" + ERPCode + "]";
     }
     

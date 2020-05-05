@@ -59,7 +59,7 @@ public class RestNimbiProd extends RestNimbiConfig {
 
     @Override
     public UriComponents getUriPostAdvancedShipmentNotificationPost() throws ParseException {
-        return getUriComponents(GET_PATH_POST_ASN);
+        return getUriComponentsNoPort(GET_PATH_POST_ASN);
     }
 
 }
