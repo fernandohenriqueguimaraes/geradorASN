@@ -6,9 +6,11 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+
 public class AdvancedShipmentNotificationPost {
 
-	private List<ASNItem> ASNItems;
+	private List<ASNItem> ASNItem;
 
 	private String AsnNumber;
 	private String AsnStatus;
@@ -60,7 +62,7 @@ public class AdvancedShipmentNotificationPost {
 	private String ShipCityTaxCode;
 
 	public AdvancedShipmentNotificationPost() {
-		setASNItems(new ArrayList<ASNItem>());
+		setASNItem(new ArrayList<ASNItem>());
 		setCompany(new Company());
 		setCarrier(new Carrier());
 		setIncoterm(new Incoterm());
@@ -112,12 +114,13 @@ public class AdvancedShipmentNotificationPost {
 		setShipCityTaxCode(StringUtils.EMPTY);
 	}
 	
-	public List<ASNItem> getASNItems() {
-		return ASNItems;
+	@JsonGetter("ASNItem")
+	public List<ASNItem> getASNItem() {
+		return ASNItem;
 	}
 
-	public void setASNItems(List<ASNItem> aSNItems) {
-		ASNItems = aSNItems;
+	public void setASNItem(List<ASNItem> ASNItem) {
+		this.ASNItem = ASNItem;
 	}
 
 	public String getAsnNumber() {
@@ -506,7 +509,7 @@ public class AdvancedShipmentNotificationPost {
 
 	@Override
 	public String toString() {
-		return "AdvancedShipmentNotificationPost [ASNItems=" + ASNItems + ", AsnNumber=" + AsnNumber + ", AsnStatus="
+		return "AdvancedShipmentNotificationPost [ASNItem=" + ASNItem + ", AsnNumber=" + AsnNumber + ", AsnStatus="
 				+ AsnStatus + ", company=" + company + ", BoardingInstructionsText=" + BoardingInstructionsText
 				+ ", carrier=" + carrier + ", ContainerType=" + ContainerType + ", DangerousFormNumber="
 				+ DangerousFormNumber + ", DivisibleLoadStatus=" + DivisibleLoadStatus
