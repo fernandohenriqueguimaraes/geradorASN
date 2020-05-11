@@ -197,7 +197,7 @@ public class GeradorASNService {
         try {
 
             OrdemPedidoNimbiResponse pedidoResponse = nimbiService.consultarPedidoPorCodeERP(
-                    advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrder().getERPCode());
+                    advancedShipmentNotificationPost.getASNItem().get(0).getPurchaseOrder().getERPCode());
 
             advancedShipmentNotificationPost.getIncoterm()
                     .setCode(pedidoResponse.getPurchaseOrderGroupGetAPI().get(0).getPurchaseOrder().getIncotermCode());
@@ -207,31 +207,31 @@ public class GeradorASNService {
                     pedidoResponse.getPurchaseOrderGroupGetAPI().get(0).getPurchaseOrder().getBuyerCountryCode());
             advancedShipmentNotificationPost.getCompany().setFiscalIdentifier(
                     pedidoResponse.getPurchaseOrderGroupGetAPI().get(0).getPurchaseOrder().getBuyerTaxNumber());
-            advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrder().setPurchaseOrderNumber(
+            advancedShipmentNotificationPost.getASNItem().get(0).getPurchaseOrder().setPurchaseOrderNumber(
                     pedidoResponse.getPurchaseOrderGroupGetAPI().get(0).getPurchaseOrder().getId().toString());
-            advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrderNumber().setPurchaseOrderNumber(
+            advancedShipmentNotificationPost.getASNItem().get(0).getPurchaseOrderNumber().setPurchaseOrderNumber(
                     Integer.parseInt(pedidoResponse.getPurchaseOrderGroupGetAPI().get(0).getPurchaseOrder().getId().toString()));
 
             List<OrderItems> orderItems = pedidoResponse.getPurchaseOrderGroupGetAPI().get(0).getOrderItems().stream()
-                    .filter(item -> advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrder()
+                    .filter(item -> advancedShipmentNotificationPost.getASNItem().get(0).getPurchaseOrder()
                             .getPurchaseOrderItem().getPurchaseOrderItemNumber().equals(item.getLineERP().toString()))
                     .collect(Collectors.toList());
 
-            advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrder().getPurchaseOrderItem()
+            advancedShipmentNotificationPost.getASNItem().get(0).getPurchaseOrder().getPurchaseOrderItem()
                     .setSupplierItemNumber(orderItems.get(0).getCode());
 
-            advancedShipmentNotificationPost.getASNItems().get(0).getShipToItem().getAddress()
+            advancedShipmentNotificationPost.getASNItem().get(0).getShipToItem().getAddress()
                     .setRegionCode(empresa.getUf());
 
-            advancedShipmentNotificationPost.getASNItems().get(0).getShipToItem()
+            advancedShipmentNotificationPost.getASNItem().get(0).getShipToItem()
                     .setCountryCode(empresa.getCodigoPais());
 
-            advancedShipmentNotificationPost.getASNItems().get(0).getUnitOfMeasurement()
+            advancedShipmentNotificationPost.getASNItem().get(0).getUnitOfMeasurement()
                     .setCode(orderItems.get(0).getUnitOfMeasureCode());
-            advancedShipmentNotificationPost.getASNItems().get(0).getUnitOfMeasurement()
+            advancedShipmentNotificationPost.getASNItem().get(0).getUnitOfMeasurement()
                     .setDescription(orderItems.get(0).getUnitOfMeasureDescription());
-            advancedShipmentNotificationPost.getASNItems().get(0).setPackageType(DEFAULT_PACKAGE_TYPE);
-            advancedShipmentNotificationPost.getASNItems().get(0).getPurchaseOrderNumber()
+            advancedShipmentNotificationPost.getASNItem().get(0).setPackageType(DEFAULT_PACKAGE_TYPE);
+            advancedShipmentNotificationPost.getASNItem().get(0).getPurchaseOrderNumber()
                     .setPurchaseOrderDate(DataUtil.formatarData(DataUtil.convertDateTimeFromISO(
                             pedidoResponse.getPurchaseOrderGroupGetAPI().get(0).getPurchaseOrder().getCreatedDate())));
 

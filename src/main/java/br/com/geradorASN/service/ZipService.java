@@ -313,7 +313,7 @@ public class ZipService {
 			}
 		}
 		
-		advancedShipmentNotificationPost.getASNItems().add(asnItem);
+		advancedShipmentNotificationPost.getASNItem().add(asnItem);
 		mapeamento.setAdvancedShipmentNotificationPost(advancedShipmentNotificationPost);
 
 		log.info("Gerado o Advanced Shipment Notification Post: " + advancedShipmentNotificationPost.toString());
